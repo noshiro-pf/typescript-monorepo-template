@@ -1,9 +1,9 @@
 import { genIndex } from 'ts-repo-utils';
-import { projectRootPath } from '../project-root-path.mjs';
+import { workspaceRootPath } from '../workspace-root-path.mjs';
 
 try {
   await genIndex({
-    targetDirectory: path.resolve(projectRootPath, './src'),
+    targetDirectory: path.resolve(workspaceRootPath, './src'),
   });
 } catch (error) {
   console.error(`Error: ${String(error)}`);

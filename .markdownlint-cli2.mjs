@@ -1,5 +1,5 @@
 export default {
-  globs: ['**/*.md', '!node_modules', '!docs/**/*', '!CHANGELOG.md'],
+  globs: ['**/*.md', '!node_modules', '!**/docs/**/*', '!CHANGELOG.md'],
   prettier: true,
   fix: true,
 

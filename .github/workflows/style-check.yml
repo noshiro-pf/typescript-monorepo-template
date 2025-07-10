@@ -26,8 +26,8 @@ jobs:
         command:
           - fmt
           - cspell
-          - doc
-          - check:ext
+          - ws:doc
+          - ws:check:ext
           - md
 
     # Steps represent a sequence of tasks that will be executed as part of the job

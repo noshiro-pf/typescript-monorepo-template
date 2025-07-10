@@ -28,9 +28,9 @@ jobs:
       fail-fast: true
       matrix:
         command:
-          - test:cov
-          - lint
-          - build
+          - ws:test:cov
+          - ws:lint
+          - ws:build
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
