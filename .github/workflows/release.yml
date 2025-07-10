@@ -45,6 +45,8 @@ jobs:
         with:
           version: npm run version-packages
           publish: npm run release
+          title: 'chore: version packages'
+          commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
