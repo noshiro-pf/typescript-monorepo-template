@@ -32,6 +32,8 @@ Repository permissions:
 - **Actions**: Read (to trigger workflows)
 - **Metadata**: Read (always required)
 
+**Important Note about GitHub Packages**: GitHub Apps cannot have package permissions. If you need to publish packages to GitHub Packages, you must use a Personal Access Token (PAT) with `write:packages` permission instead. See the [GitHub Packages Setup guide](./github-packages-setup.md) for details on configuring package publishing.
+
 ### Where can this GitHub App be installed?
 
 - Choose **Only on this account**
@@ -80,6 +82,18 @@ If workflows still don't trigger:
 2. Ensure the app is installed on the repository
 3. Check that the secrets and variables are correctly named
 4. Look at the Actions logs for any authentication errors
+
+## GitHub Packages Publishing
+
+This GitHub App setup is specifically for triggering workflows when Changesets creates PRs. However, **GitHub Apps cannot publish packages to GitHub Packages**.
+
+For package publishing, you need:
+
+1. A Personal Access Token (PAT) with `write:packages` permission
+2. Store it as `NPM_TOKEN` in repository secrets
+3. The release workflow will use this token for publishing
+
+See the [GitHub Packages Setup guide](./github-packages-setup.md) for complete package publishing configuration.
 
 ## Security Notes
 
