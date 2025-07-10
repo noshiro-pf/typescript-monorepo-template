@@ -1,12 +1,12 @@
 import { Result } from 'ts-data-forge';
 import { assertPathExists } from 'ts-repo-utils';
-import { projectRootPath } from '../project-root-path.mjs';
+import { workspaceRootPath } from '../workspace-root-path.mjs';
 
 // Build configuration
 const BUILD_CONFIG = {
-  distDir: path.resolve(projectRootPath, './dist'),
-  srcGlobalsFile: path.resolve(projectRootPath, './src/globals.d.mts'),
-  rollupConfig: path.resolve(projectRootPath, './configs/rollup.config.ts'),
+  distDir: path.resolve(workspaceRootPath, './dist'),
+  srcGlobalsFile: path.resolve(workspaceRootPath, './src/globals.d.mts'),
+  rollupConfig: path.resolve(workspaceRootPath, './configs/rollup.config.ts'),
   distTsConfig: { include: ['.'] },
 } as const;
 

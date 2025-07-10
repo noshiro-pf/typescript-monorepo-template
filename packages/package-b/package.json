@@ -1,0 +1,54 @@
+{
+  "name": "@noshiro-pf/package-b",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noshiro-pf/typescript-monorepo-template.git"
+  },
+  "license": "Apache-2.0",
+  "author": "noshiro-pf <noshiro.pf@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    }
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsx ./scripts/cmd/build.mjs",
+    "check-all": "tsx ./scripts/cmd/check-all.mjs",
+    "check:ext": "tsx ./scripts/cmd/check-ext.mjs",
+    "doc": "tsx ./scripts/cmd/gen-docs.mjs",
+    "fmt": "prettier --write .",
+    "gi": "tsx ./scripts/cmd/gi.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "md": "markdownlint-cli2 --config ../../.markdownlint-cli2.mjs",
+    "test": "npm run z:vitest -- run",
+    "test:cov": "npm run z:vitest -- run --coverage",
+    "test:cov:ui": "vite preview --outDir ./coverage",
+    "test:ui": "npm run z:vitest -- --ui",
+    "testw": "npm run z:vitest -- watch",
+    "tsc": "tsc --noEmit",
+    "tscw": "tsc --noEmit --watch",
+    "type-check": "tsc --noEmit",
+    "update-packages": "npx npm-check-updates -u --install always --reject @types/node",
+    "z:vitest": "vitest --config ./configs/vitest.config.ts"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

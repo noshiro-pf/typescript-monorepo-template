@@ -1,9 +1,9 @@
 import { Result } from 'ts-data-forge';
 import { assertPathExists } from 'ts-repo-utils';
-import { projectRootPath } from '../project-root-path.mjs';
+import { workspaceRootPath } from '../workspace-root-path.mjs';
 
 const TYPEDOC_CONFIG = path.resolve(
-  projectRootPath,
+  workspaceRootPath,
   './configs/typedoc.config.mjs',
 );
 
