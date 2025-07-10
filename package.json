@@ -1,7 +1,7 @@
 {
   "name": "typescript-monorepo-template",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "keywords": [
     "typescript",
     "monorepo"
