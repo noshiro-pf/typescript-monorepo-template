@@ -40,7 +40,7 @@
     "fmt:full": "prettier --write .",
     "md": "markdownlint-cli2",
     "release": "npm run ws:build && changeset publish",
-    "update-packages": "npx npm-check-updates -u --install always --reject @types/node",
+    "update-packages": "npx npm-check-updates -u --install always",
     "version-packages": "changeset version && npm install",
     "ws:build": "tsx ./scripts/cmd/ws-build-stages.mjs",
     "ws:check:ext": "npm run check:ext --workspaces --if-present",
