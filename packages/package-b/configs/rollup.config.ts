@@ -12,7 +12,7 @@ const configDir = path.resolve(workspaceRootPath, './configs');
 const srcDir = path.resolve(workspaceRootPath, './src');
 
 const input = await glob(path.resolve(srcDir, './**/*.mts'), {
-  ignore: ['**/*.test.mts'],
+  ignore: ['**/*.test.mts', './**/*.d.mts'],
 });
 
 export default {
