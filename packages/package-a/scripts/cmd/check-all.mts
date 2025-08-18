@@ -11,14 +11,6 @@ const checkAll = async (): Promise<void> => {
   await runCmdStep('npm i', 'Failed to install dependencies');
   echo('✓ Dependencies installed\n');
 
-  // Step 2: Spell check
-  echo('2. Running spell check...');
-  await runCmdStep(
-    'cspell "**" --gitignore --gitignore-root ./ --no-progress --fail-fast',
-    'Spell check failed',
-  );
-  echo('✓ Spell check passed\n');
-
   // Step 3: Check file extensions
   echo('3. Checking file extensions...');
   await runCmdStep('npm run check:ext', 'Checking file extensions failed');

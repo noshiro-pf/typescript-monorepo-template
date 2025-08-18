@@ -13,7 +13,7 @@ const checkAll = async (): Promise<void> => {
 
   // Step 2-1: Spell check
   echo('2-1. Running spell check...');
-  await runCmdStep('npm run cspell', 'Spell check failed');
+  await runCmdStep('npm run cspell -- --fail-fast', 'Spell check failed');
   echo('✓ Spell check passed\n');
 
   // Step 2-2: Markdown style check
