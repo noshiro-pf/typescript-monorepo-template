@@ -72,7 +72,7 @@
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-packagejson": "^2.5.18",
     "rollup": "^4.45.1",
-    "ts-repo-utils": "^5.0.1",
+    "ts-repo-utils": "^7.0.1",
     "ts-type-forge": "^2.1.1",
     "tsx": "^4.20.3",
     "typedoc": "^0.28.7",
