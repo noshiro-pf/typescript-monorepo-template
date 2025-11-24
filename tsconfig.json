@@ -4,10 +4,12 @@
     "./configs/tsconfig/tsconfig.vite.json"
   ],
   "include": [
-    "./src",
-    "./scripts",
-    "./configs",
-    "./release.config.js",
+    "./scripts/**/*",
+    "./configs/**/*",
+    "./**/eslint.config.mts",
+    "./**/configs/**/*.mts",
+    "./**/configs/**/*.ts",
+    "./**/vite.config.mts",
     "./.markdownlint-cli2.mjs"
   ]
 }

@@ -1,4 +1,5 @@
 import { Result } from 'ts-data-forge';
+import 'ts-repo-utils';
 
 /**
  * Runs all validation and build steps for the project.
@@ -6,56 +7,93 @@ import { Result } from 'ts-data-forge';
 const checkAll = async (): Promise<void> => {
   echo('Starting full project validation and build...\n');
 
-  // Step 1: Install dependencies
-  echo('1. Installing dependencies...');
-  await runCmdStep('npm i', 'Failed to install dependencies');
-  echo('✓ Dependencies installed\n');
+  await logStep({
+    startMessage: 'Installing dependencies',
+    action: () => runCmdStep('pnpm i', 'Failed to install dependencies'),
+    successMessage: 'Dependencies installed',
+  });
 
-  // Step 2-1: Spell check
-  echo('2-1. Running spell check...');
-  await runCmdStep('npm run cspell -- --fail-fast', 'Spell check failed');
-  echo('✓ Spell check passed\n');
+  await logStep({
+    startMessage: 'Running spell check',
+    action: () => runCmdStep('pnpm run cspell', 'Spell check failed'),
+    successMessage: 'Spell check passed',
+  });
 
-  // Step 2-2: Markdown style check
-  echo('2-2. Running Markdown check...');
-  await runCmdStep('npm run md', 'Markdown check failed');
-  echo('✓ Markdown check passed\n');
+  await logStep({
+    startMessage: 'Running Markdown check',
+    action: () => runCmdStep('pnpm run md', 'Markdown check failed'),
+    successMessage: 'Markdown check passed',
+  });
 
-  // Step 3: Check file extensions
-  echo('3. Checking file extensions...');
-  await runCmdStep('npm run ws:check:ext', 'Checking file extensions failed');
-  echo('✓ File extensions validated\n');
+  await logStep({
+    startMessage: 'Checking file extensions',
+    action: () =>
+      runCmdStep('pnpm run ws:check:ext', 'Checking file extensions failed'),
+    successMessage: 'File extensions validated',
+  });
 
-  // Step 4: Run tests
-  echo('4. Running tests...');
-  await runCmdStep('npm run ws:test:cov', 'Tests failed');
-  echo('✓ Tests passed\n');
+  await logStep({
+    startMessage: 'Checking scripts and configs',
+    action: () =>
+      runCmdStep('pnpm run check:root', 'Checking scripts and configs failed'),
+    successMessage: 'Scripts and configs validated',
+  });
 
-  // Step 5: Lint and check repo status
-  echo('5. Running lint fixes...');
-  await runCmdStep('npm run ws:lint', 'Linting failed');
-  echo('✓ Lint fixes applied\n');
+  await logStep({
+    startMessage: 'Building project',
+    action: () => runCmdStep('pnpm run ws:build', 'Build failed'),
+    successMessage: 'Build succeeded',
+  });
 
-  // Step 6: Build and check repo status
-  echo('6. Building project...');
-  await runCmdStep('npm run ws:build', 'Build failed');
+  await logStep({
+    startMessage: 'Running tests',
+    action: () => runCmdStep('pnpm run ws:test:cov', 'Tests failed'),
+    successMessage: 'Tests passed',
+  });
 
-  // Step 7: Generate docs and check repo status
-  echo('7. Generating documentation...');
-  await runCmdStep('npm run ws:doc', 'Documentation generation failed');
+  await logStep({
+    startMessage: 'Running lint fixes',
+    action: () => runCmdStep('pnpm run ws:lint', 'Linting failed'),
+    successMessage: 'Lint fixes applied',
+  });
 
-  // Step 8: Format and check repo status
-  echo('8. Formatting code...');
-  await runCmdStep('npm run fmt', 'Formatting failed');
+  await logStep({
+    startMessage: 'Formatting code',
+    action: () => runCmdStep('pnpm run fmt', 'Formatting failed'),
+    successMessage: 'Code formatted',
+  });
 
   echo('✅ All checks completed successfully!\n');
 };
 
+const step = { current: 1 };
+
+const logStep = async ({
+  startMessage,
+  successMessage,
+  action,
+}: Readonly<{
+  startMessage: string;
+  action: () => Promise<void>;
+  successMessage: string;
+}>): Promise<void> => {
+  echo(`${step.current}. ${startMessage}...`);
+
+  await action();
+
+  echo(`✓ ${successMessage}.\n`);
+
+  step.current += 1;
+};
+
 const runCmdStep = async (cmd: string, errorMsg: string): Promise<void> => {
   const result = await $(cmd);
+
   if (Result.isErr(result)) {
     echo(`${errorMsg}: ${result.value.message}`);
+
     echo('❌ Check failed');
+
     process.exit(1);
   }
 };

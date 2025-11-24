@@ -2,10 +2,12 @@
   "version": "0.2",
   "language": "en",
   "words": ["noshiro", "testw", "tscw"],
-  "flagWords": [],
+
   "ignorePaths": [
-    "configs/eslint/shared-config.mjs",
-    "**/eslint.config.js",
-    "./package-lock.json"
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "dist/**",
+    "docs/**",
+    "agents/common/**"
   ]
 }

@@ -56,10 +56,10 @@ Add the following variables (**Settings** → **Secrets and variables** → **Ac
 
 ```bash
 # Build packages
-npm run build
+pnpm run build
 
 # Publish to GitHub Packages
-npm run release
+pnpm run release
 ```
 
 ## Installing Published Packages
@@ -92,8 +92,8 @@ npm login --scope=@noshiro-pf --registry=https://npm.pkg.github.com/
 ### 3. Install Package
 
 ```bash
-npm install @noshiro-pf/package-a
-npm install @noshiro-pf/package-b
+pnpm install @noshiro-pf/package-a
+pnpm install @noshiro-pf/package-b
 ```
 
 ## Package Usage

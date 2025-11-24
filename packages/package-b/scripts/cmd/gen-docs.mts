@@ -1,6 +1,7 @@
-import { Result } from 'ts-data-forge';
+import { Result, unknownToString } from 'ts-data-forge';
 import { assertPathExists } from 'ts-repo-utils';
 import { workspaceRootPath } from '../workspace-root-path.mjs';
+import { embedSamples } from './embed-samples.mjs';
 
 const TYPEDOC_CONFIG = path.resolve(
   workspaceRootPath,
@@ -10,40 +11,78 @@ const TYPEDOC_CONFIG = path.resolve(
 /**
  * Generates documentation using TypeDoc and formats the output.
  */
-const genDocs = async (): Promise<void> => {
+export const genDocs = async (): Promise<void> => {
   echo('Starting documentation generation...\n');
 
   // Verify TypeDoc config exists
   await assertPathExists(TYPEDOC_CONFIG, 'TypeDoc config');
 
-  // Step 1: Generate docs with TypeDoc
-  echo('1. Generating documentation with TypeDoc...');
-  await runStep(
-    `typedoc --options "${TYPEDOC_CONFIG}"`,
-    'TypeDoc generation failed',
-  );
-  echo('✓ TypeDoc generation completed\n');
+  await logStep({
+    startMessage: 'Embedding sample code into README',
+    action: () => runStep(embedSamples(), 'Sample embedding failed'),
+    successMessage: 'Sample code embedded into README',
+  });
 
-  // Step 2: Format generated files
-  echo('2. Formatting generated files...');
-  await runStep('npm run fmt', 'Formatting failed');
-  echo('✓ Formatting completed\n');
-
-  // Step 3: Lint markdown files
-  echo('3. Linting markdown files...');
-  await runStep('npm run md', 'Markdown linting failed');
-  echo('✓ Markdown linting completed\n');
+  await logStep({
+    startMessage: 'Generating documentation with TypeDoc',
+    action: () =>
+      runCmdStep(
+        `typedoc --options "${TYPEDOC_CONFIG}"`,
+        'TypeDoc generation failed',
+      ),
+    successMessage: 'TypeDoc generation completed',
+  });
 
   echo('✅ Documentation generation completed successfully!\n');
 };
 
-const runStep = async (cmd: string, errorMsg: string): Promise<void> => {
+const step = { current: 1 };
+
+const logStep = async ({
+  startMessage,
+  successMessage,
+  action,
+}: Readonly<{
+  startMessage: string;
+  action: () => Promise<void>;
+  successMessage: string;
+}>): Promise<void> => {
+  echo(`${step.current}. ${startMessage}...`);
+
+  await action();
+
+  echo(`✓ ${successMessage}.\n`);
+
+  step.current += 1;
+};
+
+const runCmdStep = async (cmd: string, errorMsg: string): Promise<void> => {
   const result = await $(cmd);
+
   if (Result.isErr(result)) {
-    echo(`${errorMsg}: ${result.value.message}`);
-    echo('❌ Documentation generation failed');
+    console.error(`${errorMsg}: ${result.value.message}`);
+
+    console.error('❌ Documentation generation failed');
+
     process.exit(1);
   }
 };
 
-await genDocs();
+const runStep = async (
+  promise: Promise<UnknownResult>,
+  errorMsg: string,
+): Promise<void> => {
+  const result = await promise;
+
+  if (Result.isErr(result)) {
+    console.error(`${errorMsg}: ${unknownToString(result.value)}`);
+
+    console.error('❌ Documentation generation failed');
+
+    process.exit(1);
+  }
+};
+
+if (isDirectlyExecuted(import.meta.url)) {
+  await genDocs();
+}

@@ -6,12 +6,10 @@ await assertExt({
     {
       path: path.resolve(workspaceRootPath, './src'),
       extension: '.mts',
-      ignorePatterns: ['globals.d.mts'],
     },
     {
       path: path.resolve(workspaceRootPath, './scripts'),
       extension: '.mts',
-      ignorePatterns: [],
     },
   ],
 });

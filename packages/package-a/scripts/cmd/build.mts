@@ -1,117 +1,175 @@
-import { Result } from 'ts-data-forge';
+import { unknownToString } from 'ts-data-forge';
 import { assertPathExists } from 'ts-repo-utils';
 import { workspaceRootPath } from '../workspace-root-path.mjs';
 
-// Build configuration
-const BUILD_CONFIG = {
-  distDir: path.resolve(workspaceRootPath, './dist'),
-  srcGlobalsFile: path.resolve(workspaceRootPath, './src/globals.d.mts'),
-  rollupConfig: path.resolve(workspaceRootPath, './configs/rollup.config.ts'),
-  distTsConfig: { include: ['.'] },
-} as const;
+const distDir = path.resolve(workspaceRootPath, './dist');
 
 /**
  * Builds the entire project.
  */
-const build = async (): Promise<void> => {
+const build = async (skipCheck: boolean): Promise<void> => {
   echo('Starting build process...\n');
 
-  // Step 1: Validate file extensions
-  echo('1. Checking file extensions...');
-  await $('npm run check:ext');
+  if (!skipCheck) {
+    await logStep({
+      startMessage: 'Checking file extensions',
+      action: () =>
+        runCmdStep('pnpm run check:ext', 'Checking file extensions failed'),
+      successMessage: 'File extensions validated',
+    });
 
-  // Step 2: Clean previous build
-  {
-    echo('2. Cleaning dist directory...');
-    await runStep(
-      Result.fromPromise(
-        fs.rm(BUILD_CONFIG.distDir, {
-          recursive: true,
-          force: true,
-        }),
-      ),
-      'Failed to clean dist directory',
-    );
-    echo('✓ Cleaned dist directory\n');
+    await logStep({
+      startMessage: 'Cleaning dist directory',
+      action: () =>
+        runStep(
+          Result.fromPromise(
+            fs.rm(distDir, {
+              recursive: true,
+              force: true,
+            }),
+          ),
+          'Failed to clean dist directory',
+        ),
+      successMessage: 'Cleaned dist directory',
+    });
+
+    await logStep({
+      startMessage: 'Generating index files',
+      action: () => runCmdStep('pnpm run gi', 'Generating index files failed'),
+      successMessage: 'Index files generated',
+    });
+
+    await logStep({
+      startMessage: 'Running type checking',
+      action: () => runCmdStep('tsc --noEmit', 'Type checking failed'),
+      successMessage: 'Type checking passed',
+    });
   }
 
-  // Step 3: Generate index files
-  {
-    echo('3. Generating index files...');
-    await runCmdStep('npm run gi', 'Generating index files failed');
-    echo('✓ Generating index files completed\n');
-  }
+  await logStep({
+    startMessage: 'Building with Rollup',
+    action: async () => {
+      const rollupConfig = path.resolve(
+        workspaceRootPath,
+        './configs/rollup.config.ts',
+      );
 
-  // Step 4: Type checking
-  {
-    echo('4. Running type checking...');
-    await runCmdStep('tsc --noEmit', 'Type checking failed');
-    echo('✓ Type checking passed\n');
-  }
+      await assertPathExists(rollupConfig, 'Rollup config');
 
-  // Step 5: Build with Rollup
-  {
-    echo('5. Building with Rollup...');
-    await assertPathExists(BUILD_CONFIG.rollupConfig, 'Rollup config');
-    await runCmdStep(
-      [
-        'rollup',
-        `--config ${BUILD_CONFIG.rollupConfig}`,
-        '--configPlugin typescript',
-        '--configImportAttributesKey with',
-      ].join(' '),
-      'Rollup build failed',
-    );
-    echo('✓ Rollup build completed\n');
-  }
+      await runCmdStep(
+        [
+          'rollup',
+          `--config ${rollupConfig}`,
+          '--configPlugin typescript',
+          '--configImportAttributesKey with',
+        ].join(' '),
+        'Rollup build failed',
+      );
+    },
+    successMessage: 'Rollup build completed',
+  });
 
-  // Step 6: Copy globals
-  {
-    echo('6. Copying global type definitions...');
-    await assertPathExists(BUILD_CONFIG.srcGlobalsFile, 'Global types file');
+  await logStep({
+    startMessage: 'Copying global type definitions',
+    action: async () => {
+      const srcGlobalsFile = path.resolve(
+        workspaceRootPath,
+        './src/globals.d.mts',
+      );
 
-    const destFile = path.resolve(BUILD_CONFIG.distDir, 'globals.d.mts');
-    await runCmdStep(
-      `cp "${BUILD_CONFIG.srcGlobalsFile}" "${destFile}"`,
-      'Failed to copy globals',
-    );
-    echo('✓ Copied globals.d.mts to dist\n');
-  }
+      await assertPathExists(srcGlobalsFile, 'Global types file');
 
-  // Step 7: Generate dist tsconfig
-  {
-    echo('7. Generating dist TypeScript config...');
-    const configContent = JSON.stringify(BUILD_CONFIG.distTsConfig);
-    const configFile = path.resolve(BUILD_CONFIG.distDir, 'tsconfig.json');
-    await runStep(
-      Result.fromPromise(fs.writeFile(configFile, configContent)),
-      'Failed to generate tsconfig',
-    );
-    echo('✓ Generated dist/tsconfig.json\n');
-  }
+      const destFile = path.resolve(distDir, 'globals.d.mts');
+
+      await runCmdStep(
+        `cp "${srcGlobalsFile}" "${destFile}"`,
+        'Failed to copy globals',
+      );
+    },
+    successMessage: 'Copied globals.d.mts to dist',
+  });
+
+  await logStep({
+    startMessage: 'Generating dist/types.d.mts',
+    action: async () => {
+      const content = [
+        "import './globals.d.mts';",
+        "export * from './entry-point.mjs';",
+      ].join('\n');
+
+      const typesFile = path.resolve(distDir, 'types.d.mts');
+
+      await runStep(
+        Result.fromPromise(fs.writeFile(typesFile, content)),
+        'Failed to generate dist/types.d.mts',
+      );
+    },
+    successMessage: 'Generated dist/types.d.mts',
+  });
+
+  await logStep({
+    startMessage: 'Generating dist TypeScript config',
+    action: async () => {
+      const configContent = JSON.stringify({ include: ['.'] });
+
+      const configFile = path.resolve(distDir, 'tsconfig.json');
+
+      await runStep(
+        Result.fromPromise(fs.writeFile(configFile, configContent)),
+        'Failed to generate tsconfig',
+      );
+    },
+    successMessage: 'Generated dist/tsconfig.json',
+  });
 
   echo('✅ Build completed successfully!\n');
 };
 
+const step = { current: 1 };
+
+const logStep = async ({
+  startMessage,
+  successMessage,
+  action,
+}: Readonly<{
+  startMessage: string;
+  action: () => Promise<void>;
+  successMessage: string;
+}>): Promise<void> => {
+  echo(`${step.current}. ${startMessage}...`);
+
+  await action();
+
+  echo(`✓ ${successMessage}.\n`);
+
+  step.current += 1;
+};
+
 const runCmdStep = async (cmd: string, errorMsg: string): Promise<void> => {
   const result = await $(cmd);
+
   if (Result.isErr(result)) {
-    echo(`${errorMsg}: ${result.value.message}`);
-    echo('❌ Build failed');
+    console.error(`${errorMsg}: ${result.value.message}`);
+
+    console.error('❌ Build failed');
+
     process.exit(1);
   }
 };
 
 const runStep = async (
-  promise: Promise<Result.Base>,
+  promise: Promise<UnknownResult>,
   errorMsg: string,
 ): Promise<void> => {
   const result = await promise;
+
   if (Result.isErr(result)) {
-    echo(`${errorMsg}: ${String(result.value)}`);
-    echo('❌ Build failed');
+    console.error(`${errorMsg}: ${unknownToString(result.value)}`);
+
+    console.error('❌ Build failed');
+
     process.exit(1);
   }
 };
 
-await build();
+await build(process.argv.includes('--skip-check'));
