@@ -23,6 +23,7 @@ jobs:
           - check:root
           - ws:type-check
           - ws:lint:fix
+          - ws:test
           - ws:test:cov
 
     steps:
@@ -55,6 +56,10 @@ jobs:
         run: pnpm install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Playwright Browsers
+        if: matrix.command == 'ws:test:cov'
+        run: pnpm exec playwright install chromium
 
       # NOTE: To include this workflow in the branch protection rule status check,
       # skip each steps instead of skipping the entire workflow with paths-ignore.
