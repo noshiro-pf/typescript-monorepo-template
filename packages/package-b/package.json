@@ -47,7 +47,7 @@
     "tscw": "tsc --noEmit --watch",
     "type-check": "tsc --noEmit",
     "update-packages": "pnpm update --latest",
-    "z:vitest": "vitest --config ./configs/vitest.config.ts"
+    "z:vitest": "vitest --config ./configs/vitest.config.mts"
   },
   "publishConfig": {
     "access": "public",
