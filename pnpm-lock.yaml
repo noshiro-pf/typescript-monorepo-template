@@ -87,8 +87,8 @@ importers:
         specifier: 6.0.0
         version: 6.0.0(typescript@5.9.3)
       ts-repo-utils:
-        specifier: 7.9.4
-        version: 7.9.4(prettier@3.7.3)(typescript@5.9.3)
+        specifier: 7.9.5
+        version: 7.9.5(prettier@3.7.3)(typescript@5.9.3)
       ts-type-forge:
         specifier: 2.3.0
         version: 2.3.0
@@ -3316,8 +3316,8 @@ packages:
   ts-fortress@6.1.0:
     resolution: {integrity: sha512-c0TQ1expb0JDW1bfq7kY5ATdVpiZIXyMQoKAqR54L351rcNKxv+AR+oP5b1uSdfEKSF4r4S9Zr4gtF7gco4Ldw==}
 
-  ts-repo-utils@7.9.4:
-    resolution: {integrity: sha512-gvJBxpL0EAQKUE25hRCsHfynk2lSpyU8psj0yguUko0ZPowtixOYzW3HNrEeq++80fXHJhJqeqssvWFoxsrF5A==}
+  ts-repo-utils@7.9.5:
+    resolution: {integrity: sha512-ET4dQAQYV9tQbiWL+vxAafdR445KTFFp7WAxWqVhrqTWJiAJPJ74p0m31iCC/AsaemExP+CoTPVi86NYsNEn9Q==}
     hasBin: true
     peerDependencies:
       prettier: ^3.7.3
@@ -5967,7 +5967,7 @@ snapshots:
       octokit-safe-types: 1.2.2(typescript@5.9.3)
       ts-data-forge: 5.1.1(typescript@5.9.3)
       ts-fortress: 6.1.0(typescript@5.9.3)
-      ts-repo-utils: 7.9.4(prettier@3.7.3)(typescript@5.9.3)
+      ts-repo-utils: 7.9.5(prettier@3.7.3)(typescript@5.9.3)
     transitivePeerDependencies:
       - prettier
       - supports-color
@@ -7176,7 +7176,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  ts-repo-utils@7.9.4(prettier@3.7.3)(typescript@5.9.3):
+  ts-repo-utils@7.9.5(prettier@3.7.3)(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.1.1
       '@types/micromatch': 4.0.10
@@ -7184,7 +7184,7 @@ snapshots:
       fast-glob: 3.3.3
       micromatch: 4.0.8
       prettier: 3.7.3
-      ts-data-forge: 5.1.1(typescript@5.9.3)
+      ts-data-forge: 6.0.0(typescript@5.9.3)
       tsx: 4.21.0
     transitivePeerDependencies:
       - supports-color
