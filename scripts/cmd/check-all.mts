@@ -59,7 +59,7 @@ const checkAll = async (): Promise<void> => {
 
   await logStep({
     startMessage: 'Formatting code',
-    action: () => runCmdStep('pnpm run fmt', 'Formatting failed'),
+    action: () => runCmdStep('pnpm run fmt:diff', 'Formatting failed'),
     successMessage: 'Code formatted',
   });
 
