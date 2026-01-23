@@ -27,8 +27,8 @@
   ],
   "scripts": {
     "build": "tsx ./scripts/cmd/build.mts",
-    "check-all": "tsx ./scripts/cmd/check-all.mts",
     "check:ext": "tsx ./scripts/cmd/check-ext.mts",
+    "check-all": "tsx ./scripts/cmd/check-all.mts",
     "doc": "tsx ./scripts/cmd/gen-docs.mts",
     "doc:embed": "tsx ./scripts/cmd/embed-samples.mts",
     "doc:preview": "vite preview --config ./configs/vite.doc.config.ts",
