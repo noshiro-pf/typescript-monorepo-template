@@ -51,8 +51,8 @@ importers:
         specifier: 4.5.0
         version: 4.5.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)(vitest@4.0.16)
       github-settings-as-code:
-        specifier: 1.0.7
-        version: 1.0.7(prettier@3.7.4)(typescript@5.9.3)
+        specifier: 1.0.11
+        version: 1.0.11(prettier@3.7.4)(typescript@5.9.3)
       jiti:
         specifier: 2.6.1
         version: 2.6.1
@@ -755,13 +755,25 @@ packages:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
 
+  '@nodelib/fs.scandir@4.0.1':
+    resolution: {integrity: sha512-vAkI715yhnmiPupY+dq+xenu5Tdf2TBQ66jLvBIcCddtz+5Q8LbMKaf9CIJJreez8fQ8fgaY+RaywQx8RJIWpw==}
+    engines: {node: '>=18.18.0'}
+
   '@nodelib/fs.stat@2.0.5':
     resolution: {integrity: sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A==}
     engines: {node: '>= 8'}
 
+  '@nodelib/fs.stat@4.0.0':
+    resolution: {integrity: sha512-ctr6bByzksKRCV0bavi8WoQevU6plSp2IkllIsEqaiKe2mwNNnaluhnRhcsgGZHrrHk57B3lf95MkLMO3STYcg==}
+    engines: {node: '>=18.18.0'}
+
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@nodelib/fs.walk@3.0.1':
+    resolution: {integrity: sha512-nIh/M6Kh3ZtOmlY00DaUYB4xeeV6F3/ts1l29iwl3/cfyY/OuCfUx+v08zgx8TKPTifXRcjjqVQ4KB2zOYSbyw==}
+    engines: {node: '>=18.18.0'}
 
   '@octokit/auth-token@6.0.0':
     resolution: {integrity: sha512-P4YJBPdPSpWTQ1NU4XYdvHvXJJDxM6YwpS0FZHRgP7YFkdVxsWcpWGy/NVqlAA7PcPCnMacXlRm1y2PFZRWL/w==}
@@ -2132,8 +2144,8 @@ packages:
   git-hooks-list@4.1.1:
     resolution: {integrity: sha512-cmP497iLq54AZnv4YRAEMnEyQ1eIn4tGKbmswqwmFV4GBnAqE8NLtWxxdXa++AalfgL5EBH4IxTPyquEuGY/jA==}
 
-  github-settings-as-code@1.0.7:
-    resolution: {integrity: sha512-vGX9E09flUO53j/A0NzEEF+VnOXKqPZOQj4ReUUfHmWHCJkYHzWbtqoAqqG6Nx1XdVmL8G2krUzVPCYPrlEs9g==}
+  github-settings-as-code@1.0.11:
+    resolution: {integrity: sha512-DyYiDCo++fCpxlPnLzPN1256lghUBevKIdoDH1Yo8Z7hwkx8d8e/Bywfu+S0t6wjdteanUctnf7Bwdk5an1aSw==}
     engines: {node: '>=22', pnpm: '>=8.0.0'}
     hasBin: true
 
@@ -2732,8 +2744,8 @@ packages:
   obug@2.1.1:
     resolution: {integrity: sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ==}
 
-  octokit-safe-types@1.2.3:
-    resolution: {integrity: sha512-ThR+wiMrfLOu4Yh307yzF1xqHw0Hm5oCeUmc/xHSF7xdPsNljjXisCrftV7wyY7ryLs2A6/F/QtBOlPxgWSz4A==}
+  octokit-safe-types@1.2.5:
+    resolution: {integrity: sha512-Us4puncme3rQNdispIrwjPQjh3HH82PYtYGyCSI/RzDJTczsjsoxRTq/ZlQEy2oF6BlqzQTdPjfxeQBSxI89oQ==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -3196,14 +3208,21 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  ts-fortress@6.2.0:
-    resolution: {integrity: sha512-ae3JDB7IFjajTBBZWsXabEBXXLdfYciNES1W4Yrjr/IBoGnga9kcYfjZ8i+SO0YimRywimzG6/ZAgdaBNEOu8w==}
+  ts-fortress@6.2.2:
+    resolution: {integrity: sha512-m6kyOMx0y0RMRit0OXCUWjo8PoteG4qEmqHHJbA9jxYPPvDV4ypC8wvJhU5fG04YoabyZdZFXhDADYWihDfeUQ==}
 
   ts-repo-utils@7.9.5:
     resolution: {integrity: sha512-ET4dQAQYV9tQbiWL+vxAafdR445KTFFp7WAxWqVhrqTWJiAJPJ74p0m31iCC/AsaemExP+CoTPVi86NYsNEn9Q==}
     hasBin: true
     peerDependencies:
       prettier: ^3.7.3
+
+  ts-repo-utils@8.0.3:
+    resolution: {integrity: sha512-+jcqSGZzz4sfmfjjReUAjxVRxHIqX2IlwuogCHUOQIIOamcaTh7Vj8BTd8+DI2QqkET/xepiRsWdrMQrZor/Jw==}
+    engines: {node: '>=18', pnpm: '>=8.0.0'}
+    hasBin: true
+    peerDependencies:
+      prettier: '>=3.0.0'
 
   ts-type-forge@2.3.0:
     resolution: {integrity: sha512-uw0cVIRqy/wBU4KoQQf8udxfnzz50IXBEOUKlgYRICu7EpUxHhe8BLrFkxQH40gEI13HheFKvkT2fTRiXf2UDA==}
@@ -4158,11 +4177,23 @@ snapshots:
       '@nodelib/fs.stat': 2.0.5
       run-parallel: 1.2.0
 
+  '@nodelib/fs.scandir@4.0.1':
+    dependencies:
+      '@nodelib/fs.stat': 4.0.0
+      run-parallel: 1.2.0
+
   '@nodelib/fs.stat@2.0.5': {}
+
+  '@nodelib/fs.stat@4.0.0': {}
 
   '@nodelib/fs.walk@1.2.8':
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
+      fastq: 1.20.1
+
+  '@nodelib/fs.walk@3.0.1':
+    dependencies:
+      '@nodelib/fs.scandir': 4.0.1
       fastq: 1.20.1
 
   '@octokit/auth-token@6.0.0': {}
@@ -5767,14 +5798,14 @@ snapshots:
 
   git-hooks-list@4.1.1: {}
 
-  github-settings-as-code@1.0.7(prettier@3.7.4)(typescript@5.9.3):
+  github-settings-as-code@1.0.11(prettier@3.7.4)(typescript@5.9.3):
     dependencies:
       '@octokit/core': 7.0.6
       dotenv: 17.2.3
-      octokit-safe-types: 1.2.3(typescript@5.9.3)
+      octokit-safe-types: 1.2.5(typescript@5.9.3)
       ts-data-forge: 6.2.1(typescript@5.9.3)
-      ts-fortress: 6.2.0(typescript@5.9.3)
-      ts-repo-utils: 7.9.5(prettier@3.7.4)(typescript@5.9.3)
+      ts-fortress: 6.2.2(typescript@5.9.3)
+      ts-repo-utils: 8.0.3(prettier@3.7.4)(typescript@5.9.3)
     transitivePeerDependencies:
       - prettier
       - supports-color
@@ -6473,12 +6504,12 @@ snapshots:
 
   obug@2.1.1: {}
 
-  octokit-safe-types@1.2.3(typescript@5.9.3):
+  octokit-safe-types@1.2.5(typescript@5.9.3):
     dependencies:
       '@octokit/openapi-types': 27.0.0
       '@octokit/types': 16.0.0
       ts-data-forge: 6.2.1(typescript@5.9.3)
-      ts-fortress: 6.2.0(typescript@5.9.3)
+      ts-fortress: 6.2.2(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -6968,7 +6999,7 @@ snapshots:
       picomatch: 4.0.3
       typescript: 5.9.3
 
-  ts-fortress@6.2.0(typescript@5.9.3):
+  ts-fortress@6.2.2(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.2.0
       ts-data-forge: 6.2.1(typescript@5.9.3)
@@ -6978,6 +7009,21 @@ snapshots:
 
   ts-repo-utils@7.9.5(prettier@3.7.4)(typescript@5.9.3):
     dependencies:
+      '@sindresorhus/is': 7.2.0
+      '@types/micromatch': 4.0.10
+      cmd-ts: 0.14.3
+      fast-glob: 3.3.3
+      micromatch: 4.0.8
+      prettier: 3.7.4
+      ts-data-forge: 6.2.1(typescript@5.9.3)
+      tsx: 4.21.0
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  ts-repo-utils@8.0.3(prettier@3.7.4)(typescript@5.9.3):
+    dependencies:
+      '@nodelib/fs.walk': 3.0.1
       '@sindresorhus/is': 7.2.0
       '@types/micromatch': 4.0.10
       cmd-ts: 0.14.3
