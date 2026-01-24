@@ -44,9 +44,11 @@ pnpm i
     - `NPM_TOKEN`
         - Open <https://www.npmjs.com/settings/{your-user-id}/tokens> -> Generate New Token -> Classic Token -> Select `Automation` and generate.
         - Required for semantic-release to run npm publish
-    - `SEMANTIC_RELEASE_GIT_PERMISSION_BOT_PRIVATE_KEY`
-        - <https://github.com/apps/semantic-release-git-permission> -> App settings -> Generate a private key
-        - Required for `@semantic-release/git` to perform a git commit to the main branch
+    - `CHANGESET_PAT`
+        - Required for changeset to run npm publish.
+    - `CHANGESETS_BOT_PRIVATE_KEY`
+        - <https://github.com/settings/apps/changeset-bot-permission> -> App settings -> Generate a private key
+        - Required for changeset to open pull requests.
     - `PERSONAL_ACCESS_TOKEN`
         - The same value as `1.`
         - Required for `.github/workflows/backup-repository-settings.yml` to run
