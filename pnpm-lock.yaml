@@ -81,14 +81,14 @@ importers:
         specifier: 4.56.0
         version: 4.56.0
       ts-data-forge:
-        specifier: 6.2.2
-        version: 6.2.2(typescript@5.9.3)
+        specifier: 6.3.0
+        version: 6.3.0(typescript@5.9.3)
       ts-repo-utils:
         specifier: 8.0.3
         version: 8.0.3(prettier@3.8.1)(typescript@5.9.3)
       ts-type-forge:
-        specifier: 2.3.0
-        version: 2.3.0
+        specifier: 2.3.1
+        version: 2.3.1
       tslib:
         specifier: 2.8.1
         version: 2.8.1
@@ -1668,8 +1668,8 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  electron-to-chromium@1.5.277:
-    resolution: {integrity: sha512-wKXFZw4erWmmOz5N/grBoJ2XrNJGDFMu2+W5ACHza5rHtvsqrK4gb6rnLC7XxKB9WlJ+RmyQatuEXmtm86xbnw==}
+  electron-to-chromium@1.5.278:
+    resolution: {integrity: sha512-dQ0tM1svDRQOwxnXxm+twlGTjr9Upvt8UFWAgmLsxEzFQxhbti4VwxmMjsDxVC51Zo84swW7FVCXEV+VAkhuPw==}
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -3162,8 +3162,8 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  ts-data-forge@6.2.2:
-    resolution: {integrity: sha512-J0PX0k/AyGCM8Myrr6xIvoR0D3vaai/AtBSSYe42w+WANp1ohGv4LZwWKA18yDcshoaU87ASlnWP0U7ZT+/n8g==}
+  ts-data-forge@6.3.0:
+    resolution: {integrity: sha512-GiLmeXZpNrHtDEBl3bUWb74LVDzWgWkSL9f7J5UxHFB5/O3SuuOzvu0kxfTbQLs+5xQZCD+dwvzFfPPZqFn1TQ==}
     engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
     peerDependencies:
       typescript: '>=4.8'
@@ -3184,8 +3184,9 @@ packages:
     peerDependencies:
       prettier: '>=3.0.0'
 
-  ts-type-forge@2.3.0:
-    resolution: {integrity: sha512-uw0cVIRqy/wBU4KoQQf8udxfnzz50IXBEOUKlgYRICu7EpUxHhe8BLrFkxQH40gEI13HheFKvkT2fTRiXf2UDA==}
+  ts-type-forge@2.3.1:
+    resolution: {integrity: sha512-JBsmJ41/SMruhXKs9RNye2saw+RffR+qlxNp8HDW5qXMqXHFa5IiBAnJXXUbOev387xu018xNiHa0jvQoLZhtA==}
+    engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
 
   tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
@@ -4795,7 +4796,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.9.17
       caniuse-lite: 1.0.30001766
-      electron-to-chromium: 1.5.277
+      electron-to-chromium: 1.5.278
       node-releases: 2.0.27
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
@@ -5076,7 +5077,7 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  electron-to-chromium@1.5.277: {}
+  electron-to-chromium@1.5.278: {}
 
   emoji-regex@9.2.2: {}
 
@@ -5276,7 +5277,7 @@ snapshots:
       is-glob: 4.0.3
       is-immutable-type: 5.0.1(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       micromatch: 4.0.8
-      ts-data-forge: 6.2.2(typescript@5.9.3)
+      ts-data-forge: 6.3.0(typescript@5.9.3)
       tsutils: 3.21.0(typescript@5.9.3)
       typescript: 5.9.3
       typescript-eslint: 8.53.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -5730,7 +5731,7 @@ snapshots:
       '@octokit/core': 7.0.6
       dotenv: 17.2.3
       octokit-safe-types: 1.2.6(typescript@5.9.3)
-      ts-data-forge: 6.2.2(typescript@5.9.3)
+      ts-data-forge: 6.3.0(typescript@5.9.3)
       ts-fortress: 6.2.3(typescript@5.9.3)
       ts-repo-utils: 8.0.3(prettier@3.8.1)(typescript@5.9.3)
     transitivePeerDependencies:
@@ -6427,7 +6428,7 @@ snapshots:
     dependencies:
       '@octokit/openapi-types': 27.0.0
       '@octokit/types': 16.0.0
-      ts-data-forge: 6.2.2(typescript@5.9.3)
+      ts-data-forge: 6.3.0(typescript@5.9.3)
       ts-fortress: 6.2.3(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
@@ -6902,10 +6903,10 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  ts-data-forge@6.2.2(typescript@5.9.3):
+  ts-data-forge@6.3.0(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.2.0
-      ts-type-forge: 2.3.0
+      ts-type-forge: 2.3.1
       typescript: 5.9.3
 
   ts-declaration-location@1.0.7(typescript@5.9.3):
@@ -6916,8 +6917,8 @@ snapshots:
   ts-fortress@6.2.3(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.2.0
-      ts-data-forge: 6.2.2(typescript@5.9.3)
-      ts-type-forge: 2.3.0
+      ts-data-forge: 6.3.0(typescript@5.9.3)
+      ts-type-forge: 2.3.1
     transitivePeerDependencies:
       - typescript
 
@@ -6930,13 +6931,13 @@ snapshots:
       fast-glob: 3.3.3
       micromatch: 4.0.8
       prettier: 3.8.1
-      ts-data-forge: 6.2.2(typescript@5.9.3)
+      ts-data-forge: 6.3.0(typescript@5.9.3)
       tsx: 4.21.0
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  ts-type-forge@2.3.0: {}
+  ts-type-forge@2.3.1: {}
 
   tslib@1.14.1: {}
 
