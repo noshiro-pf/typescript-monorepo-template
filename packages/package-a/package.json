@@ -39,6 +39,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "pnpm run z:vitest:node run",
+    "test:all": "run-p test test:browser",
     "test:browser": "pnpm run z:vitest --project='Browser' run",
     "test:cov": "pnpm run z:vitest:node run --coverage",
     "test:cov:ui": "vite preview --outDir ./coverage",
