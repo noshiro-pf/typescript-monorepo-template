@@ -23,7 +23,7 @@ jobs:
           - check:root
           - ws:type-check
           - ws:lint:fix
-          - ws:test
+          - ws:test:all
           - ws:test:cov
 
     steps:
