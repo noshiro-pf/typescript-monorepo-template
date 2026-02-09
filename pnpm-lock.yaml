@@ -81,8 +81,8 @@ importers:
         specifier: 4.55.2
         version: 4.55.2
       ts-codemod-lib:
-        specifier: ^1.1.3
-        version: 1.1.3(prettier@3.8.0)(typescript@5.9.3)
+        specifier: ^1.4.2
+        version: 1.4.2
       ts-data-forge:
         specifier: 6.3.0
         version: 6.3.0(typescript@5.9.3)
@@ -3202,9 +3202,10 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  ts-codemod-lib@1.1.3:
-    resolution: {integrity: sha512-OUt09oB4lLnXTnEmm1Gz98PWv5wSLsgACQkTWDkffQMU6bKZXEy6hya7iTDRGVEjSkwDWTGRpkb4Moo4OoqqWQ==}
+  ts-codemod-lib@1.4.2:
+    resolution: {integrity: sha512-wIXs4jikkdV1KII2p5vVx5Ke7qqN1WZkP6O7ec6VTIxbrslXHgcSzZqFpMbxqmk/IqBfHHR8yycWyy/SAfiOIw==}
     engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
+    deprecated: append-as-const was published with an incorrect implementation
     hasBin: true
 
   ts-data-forge@6.3.0:
@@ -3223,13 +3224,6 @@ packages:
 
   ts-morph@27.0.2:
     resolution: {integrity: sha512-fhUhgeljcrdZ+9DZND1De1029PrE+cMkIP7ooqkLRTrRLTqcki2AstsyJm0vRNbTbVCNJ0idGlbBrfqc7/nA8w==}
-
-  ts-repo-utils@8.0.2:
-    resolution: {integrity: sha512-HgstcPr7azrpPgVOQgnv4ML7F8kctBdMTHvaNmkMjva43jyXCu9IKIm2XDfL9I0D6+Fslcb7OrcVKZprMRGYrg==}
-    engines: {node: '>=22', pnpm: '>=8.0.0'}
-    hasBin: true
-    peerDependencies:
-      prettier: '>=3.0.0'
 
   ts-repo-utils@8.1.0:
     resolution: {integrity: sha512-xe75D4Zjw/x9RtxKf6ctCqAiBGjjBD9Dtc5UyVmnI/HhwzYI3UuLDpqd0Xo0O7KnZvnbGbRnrAJp39Em1N+nbw==}
@@ -6974,17 +6968,14 @@ snapshots:
     dependencies:
       typescript: 5.9.3
 
-  ts-codemod-lib@1.1.3(prettier@3.8.0)(typescript@5.9.3):
+  ts-codemod-lib@1.4.2:
     dependencies:
       cmd-ts: 0.14.3
       dedent: 1.7.1
       ts-morph: 27.0.2
-      ts-repo-utils: 8.0.2(prettier@3.8.0)(typescript@5.9.3)
     transitivePeerDependencies:
       - babel-plugin-macros
-      - prettier
       - supports-color
-      - typescript
 
   ts-data-forge@6.3.0(typescript@5.9.3):
     dependencies:
@@ -7009,21 +7000,6 @@ snapshots:
     dependencies:
       '@ts-morph/common': 0.28.1
       code-block-writer: 13.0.3
-
-  ts-repo-utils@8.0.2(prettier@3.8.0)(typescript@5.9.3):
-    dependencies:
-      '@nodelib/fs.walk': 3.0.1
-      '@sindresorhus/is': 7.2.0
-      '@types/micromatch': 4.0.10
-      cmd-ts: 0.14.3
-      fast-glob: 3.3.3
-      micromatch: 4.0.8
-      prettier: 3.8.0
-      ts-data-forge: 6.3.0(typescript@5.9.3)
-      tsx: 4.21.0
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   ts-repo-utils@8.1.0(prettier@3.8.0)(typescript@5.9.3):
     dependencies:
