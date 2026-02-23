@@ -51,8 +51,8 @@ importers:
         specifier: 4.6.0
         version: 4.6.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)(vitest@4.0.17)
       github-settings-as-code:
-        specifier: 1.1.2
-        version: 1.1.2(typescript@5.9.3)
+        specifier: 1.1.6
+        version: 1.1.6(typescript@5.9.3)
       jiti:
         specifier: 2.6.1
         version: 2.6.1
@@ -1690,8 +1690,8 @@ packages:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
 
-  dotenv@17.2.3:
-    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
+  dotenv@17.3.1:
+    resolution: {integrity: sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==}
     engines: {node: '>=12'}
 
   dunder-proto@1.0.1:
@@ -2153,8 +2153,8 @@ packages:
   git-hooks-list@4.2.1:
     resolution: {integrity: sha512-WNvqJjOxxs/8ZP9+DWdwWJ7cDsd60NHf39XnD82pDVrKO5q7xfPqpkK6hwEAmBa/ZSEE4IOoR75EzbbIuwGlMw==}
 
-  github-settings-as-code@1.1.2:
-    resolution: {integrity: sha512-ao5ZRrzbqlxkiGxEmytGhl7HubYykR5fcUXVU9MNJTSFOTvSQQtUm5HUTAG5kDa02fCxQnxQp2oqWaBx0auOgQ==}
+  github-settings-as-code@1.1.6:
+    resolution: {integrity: sha512-TX5EnNPVMZKn26oUmgndl0SQ7LYrduFB383XSnuY3fvdAuw2oa7TrFc5C+R6eIBni3UC6gdCdPSGGzb3gj6DdQ==}
     engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
     hasBin: true
 
@@ -2749,8 +2749,8 @@ packages:
   obug@2.1.1:
     resolution: {integrity: sha512-uTqF9MuPraAQ+IsnPf366RG4cP9RtUi7MLO1N3KEc+wb0a6yKpeL0lmk2IB1jY5KHPAlTc6T/JRdC/YqxHNwkQ==}
 
-  octokit-safe-types@1.2.8:
-    resolution: {integrity: sha512-8F2Dv6ugl8CWyzZRSbcl71EZv+jVgnfbbc7ItAA4JwotPK78yUOwKI5c89dcgd/HzS1WR+Q9ifrtdUd6U+GWqw==}
+  octokit-safe-types@1.2.10:
+    resolution: {integrity: sha512-2EcPUjkrjabIOe5IWzAq+COY19uBhk42AfGlT/vJrUeLZnVH174f94d4i7SyBe+QKcmi/VrOjB8q8BJTAOXa4w==}
     engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
 
   optionator@0.9.4:
@@ -3220,8 +3220,8 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  ts-fortress@6.2.5:
-    resolution: {integrity: sha512-JD/LWwkr5NZRwnTW5nI/h/lSE1zB09tDx7RLmoVBsgvRf4hVS55dUgTPb7S7lS1B4ijYnM99RtqtRvqso4WAow==}
+  ts-fortress@6.4.0:
+    resolution: {integrity: sha512-GbV2LEkzjmzCDd7mSu9oQXIZdG3lBXU4q8y1qztf09nwoUEP6FgF12C1UYxqoCj8KriRqtwgIMCWie7uV/E+Hg==}
     engines: {node: '>=20.11.0', pnpm: '>=8.0.0'}
 
   ts-morph@27.0.2:
@@ -5127,7 +5127,7 @@ snapshots:
     dependencies:
       is-obj: 2.0.0
 
-  dotenv@17.2.3: {}
+  dotenv@17.3.1: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -5792,13 +5792,13 @@ snapshots:
 
   git-hooks-list@4.2.1: {}
 
-  github-settings-as-code@1.1.2(typescript@5.9.3):
+  github-settings-as-code@1.1.6(typescript@5.9.3):
     dependencies:
       '@octokit/core': 7.0.6
-      dotenv: 17.2.3
-      octokit-safe-types: 1.2.8(typescript@5.9.3)
+      dotenv: 17.3.1
+      octokit-safe-types: 1.2.10(typescript@5.9.3)
       ts-data-forge: 6.5.0(typescript@5.9.3)
-      ts-fortress: 6.2.5(typescript@5.9.3)
+      ts-fortress: 6.4.0(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -6487,12 +6487,12 @@ snapshots:
 
   obug@2.1.1: {}
 
-  octokit-safe-types@1.2.8(typescript@5.9.3):
+  octokit-safe-types@1.2.10(typescript@5.9.3):
     dependencies:
       '@octokit/openapi-types': 27.0.0
       '@octokit/types': 16.0.0
       ts-data-forge: 6.5.0(typescript@5.9.3)
-      ts-fortress: 6.2.5(typescript@5.9.3)
+      ts-fortress: 6.4.0(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
@@ -6988,7 +6988,7 @@ snapshots:
       picomatch: 4.0.3
       typescript: 5.9.3
 
-  ts-fortress@6.2.5(typescript@5.9.3):
+  ts-fortress@6.4.0(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.2.0
       ts-data-forge: 6.5.0(typescript@5.9.3)
