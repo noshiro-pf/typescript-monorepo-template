@@ -25,6 +25,7 @@ jobs:
           - ws:lint:fix
           - ws:test:all
           - ws:test:cov
+          - codemod:full
 
     steps:
       - name: Checkout
