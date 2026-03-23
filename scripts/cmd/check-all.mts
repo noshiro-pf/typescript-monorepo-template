@@ -53,7 +53,7 @@ const checkAll = async (): Promise<void> => {
 
   await logStep({
     startMessage: 'Running lint fixes',
-    action: () => runCmdStep('pnpm run ws:lint', 'Linting failed'),
+    action: () => runCmdStep('pnpm run ws:lint:fix', 'Linting failed'),
     successMessage: 'Lint fixes applied',
   });
 
