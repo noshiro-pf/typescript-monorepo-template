@@ -84,8 +84,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1(cmd-ts@0.14.3)(dedent@1.7.1)(ts-repo-utils@8.2.0(prettier@3.8.1)(typescript@5.9.3))(typescript@5.9.3)
       ts-data-forge:
-        specifier: 6.5.0
-        version: 6.5.0(typescript@5.9.3)
+        specifier: 6.9.0
+        version: 6.9.0(typescript@5.9.3)
       ts-repo-utils:
         specifier: 8.2.0
         version: 8.2.0(prettier@3.8.1)(typescript@5.9.3)
@@ -5927,7 +5927,7 @@ snapshots:
       '@octokit/core': 7.0.6
       dotenv: 17.3.1
       octokit-safe-types: 1.2.10(typescript@5.9.3)
-      ts-data-forge: 6.5.0(typescript@5.9.3)
+      ts-data-forge: 6.9.0(typescript@5.9.3)
       ts-fortress: 6.4.0(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
@@ -6636,7 +6636,7 @@ snapshots:
     dependencies:
       '@octokit/openapi-types': 27.0.0
       '@octokit/types': 16.0.0
-      ts-data-forge: 6.5.0(typescript@5.9.3)
+      ts-data-forge: 6.9.0(typescript@5.9.3)
       ts-fortress: 6.4.0(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
@@ -7150,7 +7150,7 @@ snapshots:
   ts-fortress@6.4.0(typescript@5.9.3):
     dependencies:
       '@sindresorhus/is': 7.2.0
-      ts-data-forge: 6.5.0(typescript@5.9.3)
+      ts-data-forge: 6.9.0(typescript@5.9.3)
       ts-type-forge: 2.4.0
     transitivePeerDependencies:
       - typescript
@@ -7169,7 +7169,7 @@ snapshots:
       fast-glob: 3.3.3
       micromatch: 4.0.8
       prettier: 3.8.1
-      ts-data-forge: 6.5.0(typescript@5.9.3)
+      ts-data-forge: 6.9.0(typescript@5.9.3)
       tsx: 4.21.0
     transitivePeerDependencies:
       - supports-color
