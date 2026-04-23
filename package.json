@@ -67,7 +67,7 @@
     "ws:lint": "pnpm run --recursive --if-present lint",
     "ws:lint:fix": "pnpm run --recursive --if-present lint:fix",
     "ws:test": "pnpm run --recursive --if-present test",
-    "ws:test:all": "pnpm run --recursive --if-present test:all",
+    "ws:test:browser": "pnpm run --recursive --if-present test:browser",
     "ws:test:cov": "pnpm run --recursive --if-present test:cov",
     "ws:tsc": "pnpm run --recursive --if-present tsc",
     "ws:type-check": "pnpm run --recursive --if-present type-check",

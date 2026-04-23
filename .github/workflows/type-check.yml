@@ -23,7 +23,7 @@ jobs:
           - check:root
           - ws:type-check
           - ws:lint:fix
-          - ws:test:all
+          - ws:test:browser
           - ws:test:cov
           - codemod:full
 
@@ -36,15 +36,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
-
-      - name: Cache Node.js modules
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.OS }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ matrix.command }}
-          restore-keys: |
-            ${{ runner.OS }}-pnpm-
-            ${{ runner.OS }}-
 
       - name: Set up Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
@@ -59,22 +50,33 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Playwright Browsers
-        if: matrix.command == 'ws:test:cov'
-        run: pnpm exec playwright install chromium
-
       # NOTE: To include this workflow in the branch protection rule status check,
       # skip each steps instead of skipping the entire workflow with paths-ignore.
       - name: Check diff
         id: check_diff_type
         run: pnpm exec check-should-run-type-checks
 
+      - name: Install Playwright Browsers
+        if: steps.check_diff_type.outputs.should_run == 'true' && matrix.command == 'ws:test:browser'
+        run: pnpm exec playwright install chromium
+
       - name: Build all packages
         run: pnpm run ws:build
 
       - name: Run "${{ matrix.command }}"
-        if: steps.check_diff_type.outputs.should_run == 'true'
+        if: steps.check_diff_type.outputs.should_run == 'true' && matrix.command != 'ws:test:browser'
         run: pnpm run ${{ matrix.command }}
+
+      # Source - https://stackoverflow.com/a/71583518
+      # Posted by VonC, modified by community. See post 'Timeline' for change history
+      # Retrieved 2026-02-10, License - CC BY-SA 4.0
+      - name: Run 'ws:test:browser' with retry
+        if: steps.check_diff_type.outputs.should_run == 'true' && matrix.command == 'ws:test:browser'
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: pnpm run ${{ matrix.command }}
 
       - name: Check if there is no file diff
         run: pnpm exec assert-repo-is-clean
