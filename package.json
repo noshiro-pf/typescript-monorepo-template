@@ -38,7 +38,7 @@
     "check:root:lint": "pnpm run z:eslint ./{scripts,configs}/**/*.mts --fix",
     "check:root:type": "tsc -p ./tsconfig.json --noEmit",
     "check-all": "tsx ./scripts/cmd/check-all.mts",
-    "ci:publish": "pnpm run ws:build && pnpm publish -r",
+    "ci:publish": "pnpm run ws:build && pnpm changeset publish",
     "ci:version-packages": "pnpm changeset version && pnpm install --no-frozen-lockfile",
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "codemod": "run-s codemod:uncommitted:as-const fmt codemod:uncommitted:readonly fmt",
