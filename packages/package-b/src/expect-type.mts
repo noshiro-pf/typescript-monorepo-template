@@ -1,4 +1,4 @@
-/// <reference types="ts-type-forge" />
+import { type TypeEq, type TypeExtends } from 'ts-type-forge';
 
 /**
  * Compile-time type assertion utility.
