@@ -1,3 +1,5 @@
+/// <reference types="ts-type-forge" />
+
 /**
  * Compile-time type assertion utility.
  * Checks the relationship between type `A` and type `B` based on the `_relation` parameter.
