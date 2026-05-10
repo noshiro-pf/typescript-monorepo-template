@@ -1,5 +1,5 @@
 import * as path from 'node:path';
-import { Result, unknownToString } from 'ts-data-forge';
+import { Result, type UnknownResult, unknownToString } from 'ts-data-forge';
 import { $, assertPathExists, isDirectlyExecuted } from 'ts-repo-utils';
 import { workspaceRootPath } from '../workspace-root-path.mjs';
 import { embedSamples } from './embed-samples.mjs';
