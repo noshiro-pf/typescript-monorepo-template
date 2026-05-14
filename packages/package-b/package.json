@@ -36,6 +36,8 @@
     "doc:preview": "vite preview --config ./configs/vite.doc.config.ts",
     "doc:watch": "typedoc --options ./configs/typedoc.config.mjs --watch",
     "fmt": "format-uncommitted --cwd .",
+    "fmt:diff": "format-diff-from origin/main --cwd .",
+    "fmt:full": "prettier --ignore-unknown --no-error-on-unmatched-pattern --write .",
     "gi": "run-s gi:src fmt",
     "gi:src": "gen-index-ts ./src --index-ext .mts --export-ext .mjs --target-ext .mts --target-ext .tsx --exclude entry-point.mts",
     "lint": "eslint .",
