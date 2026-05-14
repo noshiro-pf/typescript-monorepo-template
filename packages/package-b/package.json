@@ -35,7 +35,7 @@
     "doc:embed": "tsx ./scripts/cmd/embed-samples.mts",
     "doc:preview": "vite preview --config ./configs/vite.doc.config.ts",
     "doc:watch": "typedoc --options ./configs/typedoc.config.mjs --watch",
-    "fmt": "prettier --write .",
+    "fmt": "format-uncommitted --cwd .",
     "gi": "run-s gi:src fmt",
     "gi:src": "gen-index-ts ./src --index-ext .mts --export-ext .mjs --target-ext .mts --target-ext .tsx --exclude entry-point.mts",
     "lint": "eslint .",
