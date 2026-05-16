@@ -14,22 +14,6 @@
   "author": "noshiro-pf <noshiro.pf@gmail.com>",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    }
-  },
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "src",
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
   "workspaces": [
     "packages/**"
   ],
@@ -43,10 +27,10 @@
     "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "codemod": "run-s codemod:uncommitted:as-const fmt codemod:uncommitted:readonly fmt",
     "codemod:full": "run-s codemod:full:as-const fmt codemod:full:readonly fmt",
-    "codemod:full:as-const": "append-as-const '{src,scripts,samples,test}/**/*.{mts,tsx}'",
-    "codemod:full:readonly": "convert-to-readonly '{src,scripts,samples,test}/**/*.{mts,tsx}'",
-    "codemod:uncommitted:as-const": "append-as-const --uncommitted '{src,scripts,samples,test}/**/*.{mts,tsx}'",
-    "codemod:uncommitted:readonly": "convert-to-readonly --uncommitted '{src,scripts,samples,test}/**/*.{mts,tsx}'",
+    "codemod:full:as-const": "append-as-const 'packages/*/{src,scripts,samples,test}/**/*.{ts,mts,tsx}'",
+    "codemod:full:readonly": "convert-to-readonly 'packages/*/{src,scripts,samples,test}/**/*.{ts,mts,tsx}'",
+    "codemod:uncommitted:as-const": "append-as-const --uncommitted 'packages/*/{src,scripts,samples,test}/**/*.{ts,mts,tsx}'",
+    "codemod:uncommitted:readonly": "convert-to-readonly --uncommitted 'packages/*/{src,scripts,samples,test}/**/*.{ts,mts,tsx}'",
     "cspell": "cspell \"**\" --gitignore --gitignore-root ./ --no-progress",
     "fmt": "format-uncommitted",
     "fmt:diff": "format-diff-from origin/main",
@@ -63,6 +47,8 @@
     "ws:build": "tsx ./scripts/cmd/ws-build-stages.mts",
     "ws:check:ext": "pnpm run --recursive --if-present check:ext",
     "ws:doc": "pnpm run --recursive --if-present doc",
+    "ws:doc:embed": "pnpm run --recursive --if-present doc:embed",
+    "ws:doc:embed:jsdoc": "pnpm run --recursive --if-present doc:embed:jsdoc",
     "ws:gi": "pnpm run --recursive --if-present gi",
     "ws:lint": "pnpm run --recursive --if-present lint",
     "ws:lint:fix": "pnpm run --recursive --if-present lint:fix",
