@@ -32,7 +32,7 @@
     "codemod": "run-s codemod:all fmt",
     "codemod:all": "convert-to-readonly '{src,scripts,samples,test}/**/*.{mts,tsx}'",
     "doc": "tsx ./scripts/cmd/gen-docs.mts",
-    "doc:embed": "tsx ./scripts/cmd/embed-samples.mts",
+    "doc:embed": "tsx ./scripts/cmd/embed-examples.mts",
     "doc:preview": "vite preview --config ./configs/vite.doc.config.ts",
     "doc:watch": "typedoc --options ./configs/typedoc.config.mjs --watch",
     "fmt": "format-uncommitted --cwd .",
