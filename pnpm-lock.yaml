@@ -41,9 +41,6 @@ importers:
       cspell:
         specifier: 10.0.0
         version: 10.0.0
-      dedent:
-        specifier: 1.7.2
-        version: 1.7.2
       eslint:
         specifier: 9.39.4
         version: 9.39.4(jiti@2.7.0)
@@ -5396,7 +5393,8 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
-  dedent@1.7.2: {}
+  dedent@1.7.2:
+    optional: true
 
   deep-is@0.1.4: {}
 

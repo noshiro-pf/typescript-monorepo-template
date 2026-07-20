@@ -18,6 +18,8 @@
     "packages/**"
   ],
   "scripts": {
+    "agents:gen": "tsx ./scripts/cmd/gen-agents-md.mts",
+    "agents:sync": "tsx ./scripts/cmd/sync-agent-config.mts",
     "check:root": "pnpm run '/check:root:.*/'",
     "check:root:lint": "pnpm run z:eslint ./{scripts,configs}/**/*.mts --fix",
     "check:root:type": "tsc -p ./tsconfig.json --noEmit",
@@ -74,7 +76,6 @@
     "@vitest/ui": "4.1.5",
     "conventional-changelog-conventionalcommits": "9.3.1",
     "cspell": "10.0.0",
-    "dedent": "1.7.2",
     "eslint": "9.39.4",
     "eslint-config-typed": "4.9.8",
     "github-settings-as-code": "1.2.9",
