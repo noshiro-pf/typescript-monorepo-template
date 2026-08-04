@@ -53,7 +53,7 @@ const build = async (skipCheck: boolean): Promise<void> => {
     action: async () => {
       const rollupConfig = path.resolve(
         workspaceRootPath,
-        './configs/rollup.config.ts',
+        './configs/rollup.config.mts',
       );
 
       await assertPathExists(rollupConfig, 'Rollup config');
