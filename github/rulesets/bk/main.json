@@ -85,11 +85,11 @@
             "integration_id": 15368
           },
           {
-            "context": "test-node-versions (24.14.1)",
+            "context": "test-node-versions (24.17.0)",
             "integration_id": 15368
           },
           {
-            "context": "test-node-versions (25.9.0)",
+            "context": "test-node-versions (26.3.1)",
             "integration_id": 15368
           }
         ]

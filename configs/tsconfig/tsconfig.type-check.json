@@ -37,7 +37,6 @@
     "checkJs": true,
 
     // Interop Constraints
-    "allowSyntheticDefaultImports": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,

@@ -51,7 +51,6 @@
     "tsc": "tsc --noEmit",
     "tscw": "tsc --noEmit --watch",
     "type-check": "tsc --noEmit",
-    "update-packages": "pnpm update --latest",
     "z:vitest": "vitest --config ./configs/vitest.config.mts",
     "z:vitest:node": "pnpm run z:vitest --project='Node.js'"
   },
