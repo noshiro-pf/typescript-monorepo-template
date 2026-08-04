@@ -59,11 +59,11 @@ Repository permissions:
 1. Go to your repository's **Settings** → **Secrets and variables** → **Actions**
 
 2. Add the following **Repository secrets**:
-    - Name: `CHANGESETS_BOT_PRIVATE_KEY`
+    - Name: `CHANGESETS_RELEASE_BOT_PRIVATE_KEY`
     - Value: The entire contents of the `.pem` file you downloaded (including `-----BEGIN RSA PRIVATE KEY-----` and `-----END RSA PRIVATE KEY-----`)
 
 3. Add the following **Repository variables**:
-    - Name: `CHANGESETS_BOT_APP_ID`
+    - Name: `CHANGESETS_RELEASE_BOT_CLIENT_ID`
     - Value: Your GitHub App's ID (found on the app's settings page)
 
 ## Step 5: Verify the Setup
@@ -90,8 +90,7 @@ This GitHub App setup is specifically for triggering workflows when Changesets c
 For package publishing, you need:
 
 1. A Personal Access Token (PAT) with `write:packages` permission
-2. Store it as `NPM_TOKEN` in repository secrets
-3. The release workflow will use this token for publishing
+2. The release workflow will use this token for publishing
 
 See the [GitHub Packages Setup guide](./github-packages-setup.md) for complete package publishing configuration.
 

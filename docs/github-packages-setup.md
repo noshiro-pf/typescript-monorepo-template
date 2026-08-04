@@ -25,20 +25,18 @@ You need a GitHub Personal Access Token with the following permissions:
     - `write:packages` (to publish packages)
     - `repo` (if repository is private)
 4. Generate and copy the token
-5. Add to repository secrets as `NPM_TOKEN`
 
 ### 2. Repository Secrets
 
 Add the following secrets to your repository (**Settings** → **Secrets and variables** → **Actions**):
 
-- `NPM_TOKEN`: Your GitHub Personal Access Token
-- `CHANGESETS_BOT_PRIVATE_KEY`: GitHub App private key (already configured)
+- `CHANGESETS_RELEASE_BOT_PRIVATE_KEY`: GitHub App private key (already configured)
 
 ### 3. Repository Variables
 
 Add the following variables (**Settings** → **Secrets and variables** → **Actions**):
 
-- `CHANGESETS_BOT_APP_ID`: GitHub App ID (already configured)
+- `CHANGESETS_RELEASE_BOT_CLIENT_ID`: GitHub App Client ID (already configured)
 
 ## Publishing Process
 
