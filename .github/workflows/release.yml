@@ -58,4 +58,6 @@ jobs:
           commit: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          NODE_AUTH_TOKEN: ${{ secrets.CHANGESET_PAT }}
+          # GitHub Packages への publish は自リポジトリ向けなので GITHUB_TOKEN で足りる
+          # （ job に packages: write を付与済み ）。install ステップも同じトークンを使う。
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
