@@ -30,13 +30,13 @@ You need a GitHub Personal Access Token with the following permissions:
 
 Add the following secrets to your repository (**Settings** → **Secrets and variables** → **Actions**):
 
-- `CHANGESETS_RELEASE_BOT_PRIVATE_KEY`: GitHub App private key (already configured)
+- `REPO_AUTOMATION_BOT_PRIVATE_KEY`: GitHub App private key (already configured)
 
 ### 3. Repository Variables
 
 Add the following variables (**Settings** → **Secrets and variables** → **Actions**):
 
-- `CHANGESETS_RELEASE_BOT_CLIENT_ID`: GitHub App Client ID (already configured)
+- `REPO_AUTOMATION_BOT_CLIENT_ID`: GitHub App Client ID (already configured)
 
 ## Publishing Process
 
