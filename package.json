@@ -43,6 +43,8 @@
     "md": "markdownlint-cli2",
     "repo-settings:apply": "repo-settings apply",
     "repo-settings:backup": "repo-settings backup",
+    "update-actions": "pnpm update --recursive --include-github-actions \"*/*\"",
+    "update-packages": "pnpm update --latest --recursive",
     "ws:build": "tsx ./scripts/cmd/ws-build-stages.mts",
     "ws:check:ext": "pnpm run --recursive --if-present check:ext",
     "ws:doc": "pnpm run --recursive --if-present doc",
