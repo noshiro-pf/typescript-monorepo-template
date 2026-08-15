@@ -1,10 +1,26 @@
 name: Weekly pnpm update
 
-# Runs this repository's own `update-packages` script (which encodes the
-# skip rules such as `!eslint` / `!typescript`) together with `pnpm
-# self-update`, and opens a single bundled pull request that auto-merges once
-# CI passes. This replaces Dependabot's npm updates; GitHub Actions updates
-# stay with Dependabot (see .github/dependabot.yml).
+# Runs this repository's own `update-packages` and `update-actions` scripts
+# together with `pnpm self-update`, and opens a single bundled pull request that
+# auto-merges once CI passes. This replaces Dependabot entirely: the npm
+# dependencies come from `update-packages` (whose skip rules —
+# `update.ignoreDeps`, `minimumReleaseAge` — live in pnpm-workspace.yaml), and
+# the action pins in `.github/workflows/` come from `update-actions`. There is
+# no .github/dependabot.yml.
+#
+# The action pins move in a second, separate step. `update.githubActions` is
+# deliberately `false`, so `update-packages` — which carries `--latest` — leaves
+# them alone, and `update-actions` turns the check back on per-invocation with
+# `--include-github-actions`. That second command has no `--latest`, so an
+# action only moves within `^current`: a major stays put until a human takes it.
+# `changesets/action` v2 is why. It requires Changesets CLI v3 and renamed every
+# input, so the major landing unattended breaks release.yml on main, and neither
+# `minimumReleaseAge` nor `ignoreDeps` applies to actions (pnpm reads their
+# versions from `git ls-remote` refs, which carry no publication date).
+#
+# Because that step rewrites files under .github/workflows/, the token below has
+# to carry the `workflows` permission, or the push is rejected the moment an
+# action pin moves.
 #
 # This is a Changesets monorepo, so the workflow also adds a patch changeset
 # for each publishable (non-private) workspace package whose runtime
@@ -56,6 +72,7 @@ jobs:
       - name: Update dependencies
         run: |
           pnpm run update-packages
+          pnpm run update-actions
           pnpm install --no-frozen-lockfile
 
       # 依存更新が終わってからトークンを発行する。許可済みビルドスクリプトが
@@ -68,6 +85,10 @@ jobs:
           private-key: ${{ secrets.REPO_AUTOMATION_BOT_PRIVATE_KEY }}
           permission-contents: write # ブランチの push
           permission-pull-requests: write # PR の作成と auto-merge の有効化
+          # `update-actions` により .github/workflows/ の action ピンも
+          # 更新されるため、これが無いと push が
+          # 「refusing to allow a GitHub App to create or update workflow ...」で拒否される。
+          permission-workflows: write # workflow ファイルを含むコミットの push
 
       - name: Open auto-merge PR if anything changed
         env:
@@ -136,6 +157,6 @@ jobs:
               --base main \
               --head "$branch" \
               --title "chore: update dependencies" \
-              --body "Automated weekly dependency update via \`pnpm run update-packages\` + \`pnpm self-update\`. A patch changeset is added for publishable packages whose runtime dependencies changed. Auto-merges once CI passes."
+              --body "Automated weekly dependency update via \`pnpm run update-packages\` + \`pnpm run update-actions\` + \`pnpm self-update\`. Action pins move within \`^current\` only, so a major waits for a human. A patch changeset is added for publishable packages whose runtime dependencies changed. Auto-merges once CI passes."
           fi
           gh pr merge --auto --squash "$branch"
