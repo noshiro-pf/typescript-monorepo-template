@@ -2,7 +2,7 @@ name: Auto-fix pnpm update
 
 # Runs Claude against a failing dependency update.
 #
-# pnpm-update.yml opens `chore/pnpm-update-<date>` every week and auto-merges it
+# pnpm-update.yml rebuilds `chore/pnpm-update` every week and auto-merges it
 # once CI passes, so the update itself needs no attention — but the follow-up
 # work does, and it is the same shape every time: a major adds a lint rule, or
 # renames an API, and the pull request sits red until someone makes the small
@@ -20,6 +20,29 @@ name: Auto-fix pnpm update
 #
 # Both arrive as `workflow_run`, which always runs the copy of this file on the
 # default branch — a pull request cannot alter what this does.
+#
+# ## Running it by hand
+#
+# Nothing here depends on having been triggered by the run it works on, so a
+# manual run only needs to be told which half to run:
+#
+#   - **job** — `fix-branch` or `fix-workflow`. This one cannot be worked out
+#     for you, because the choice is needed in the job's `if:`, before any step
+#     has run.
+#   - **run** — optional. Leave it empty and the job finds its own target:
+#     `fix-branch` takes the open `chore/pnpm-update` pull request and the last
+#     failed run on it from a watched workflow, `fix-workflow` takes the last
+#     failed `Weekly pnpm update` run. Fill it in — a run URL, a job URL, or a
+#     bare run ID — only to override that, such as to work on an older failure.
+#
+# The watched-workflow filter matters more than it looks. Unrelated workflows
+# fail on the update branch too, and the newest failure there is often one of
+# those rather than the CI failure the update caused.
+#
+# One difference from the automatic path: a manual run does not apply the
+# attempt cap described below. The cap exists to stop unattended retries, and
+# a person pressing the button is attended — otherwise a branch already at the
+# cap could never be retried by hand, which is exactly when you would want to.
 #
 # ## This is inert until `CLAUDE_CODE_OAUTH_TOKEN` exists
 #
@@ -46,12 +69,41 @@ name: Auto-fix pnpm update
 # The App token is the same one pnpm-update.yml pushes with, and it carries
 # `workflows: write` because the failure may well be in a workflow file.
 #
-# ## Why the attempt is capped
+# ## Why `allowed_bots` is set
 #
-# Claude's fix lands on the branch, CI re-runs, and a still-failing run would
-# trigger this workflow again. The cap counts commits already made here — the
-# `fix(deps):` prefix is what marks them — and stops at two. Each weekly run
-# opens a branch under a new date, so the count starts from zero again.
+# `claude-code-action` refuses to run when the workflow's actor is not a
+# `User`, and fails the job with `Workflow initiated by non-human actor`.
+# On a `workflow_run` the actor is inherited from the run that triggered it,
+# and that run was CI on a branch the App bot pushed — so the actor is always
+# `noshiro-repo-automation-bot[bot]` and the guard always fires. Naming the
+# bot lifts it for that account only; the action compares case-insensitively
+# and ignores a trailing `[bot]`, so the bare name matches.
+#
+# Prefer this over `'*'`. The list is consulted only for non-`User` actors,
+# so it cannot weaken the write-access check that applies to humans, but `'*'`
+# would let any bot that can trigger one of the workflows above start Claude
+# with the App token.
+#
+# ## The retry loop, and why it is capped
+#
+# There is no loop construct here — the retry is the trigger. Claude's fix
+# lands on the branch, the push re-runs CI, and a still-failing run arrives back
+# here as another `workflow_run`. So it keeps going by itself until CI is green,
+# which is why nothing needs to poll or wait.
+#
+# Two things stop it, and both are meant to.
+#
+#   - **`MAX_FIX_ATTEMPTS`.** The cap counts the commits already made here — the
+#     `fix(deps):` prefix is what marks them. pnpm-update.yml rebuilds the
+#     branch from main every week and force-pushes, which discards those
+#     commits, so the count is back to zero on each weekly update rather than
+#     accumulating across them.
+#   - **Claude committing nothing.** When the cause is outside this repository
+#     or the call is a policy one, it is told to comment instead of committing.
+#     No commit means no push, no CI, and no further trigger — the loop ends on
+#     its own, which is the right outcome. Re-running it would only reproduce
+#     the same reasoning, so a red pull request with an explanation on it is
+#     where it is supposed to stop.
 
 on:
   workflow_run:
@@ -63,6 +115,40 @@ on:
     types:
       - completed
 
+  # Run by hand. See the header comment.
+  workflow_dispatch:
+    inputs:
+      job:
+        description: 'Which half to run'
+        required: true
+        type: choice
+        default: fix-branch
+        options:
+          - fix-branch
+          - fix-workflow
+      run:
+        description: 'Optional: a specific failed run — its URL or ID. Found automatically when empty.'
+        required: false
+        type: string
+
+# Kept in step with `on.workflow_run.workflows` above. A manual run has no
+# triggering run to inherit, so it looks one up — and it should only ever pick a
+# run that would have started this workflow on its own. Without the filter it
+# takes the newest failure on the branch, which is as likely to be some
+# unrelated workflow as the CI failure the update actually caused.
+env:
+  # How many `fix(deps):` commits this may leave on one update branch before it
+  # stops and leaves the pull request for a human. See the header comment: the
+  # retry itself is the `workflow_run` trigger, so this is the only thing
+  # bounding it when Claude keeps committing without turning CI green.
+  MAX_FIX_ATTEMPTS: '3'
+
+  WATCHED_WORKFLOWS: |
+    Weekly pnpm update
+    Type Check
+    Style Check
+    Node.js Version Compatibility
+
 # Nothing here needs write access through `GITHUB_TOKEN`: every write goes
 # through the App token generated below.
 permissions:
@@ -71,8 +157,12 @@ permissions:
 concurrency:
   # One at a time per branch. Several CI workflows fail together on the same
   # commit, and without this each would start its own Claude against the same
-  # tree.
-  group: auto-fix-pnpm-update-${{ github.event.workflow_run.head_branch }}
+  # tree. On a manual run the branch is not known until the run is resolved, so
+  # key on the run that was named instead.
+  group: >-
+    auto-fix-pnpm-update-${{
+      github.event.workflow_run.head_branch || inputs.run || 'manual'
+    }}
   cancel-in-progress: false
 
 jobs:
@@ -80,9 +170,11 @@ jobs:
   # dated (`chore/pnpm-update-20260815`), so match on the prefix.
   fix-branch:
     if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.job == 'fix-branch') ||
+      (github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'failure' &&
       startsWith(github.event.workflow_run.head_branch, 'chore/pnpm-update') &&
-      github.event.workflow_run.name != 'Weekly pnpm update'
+      github.event.workflow_run.name != 'Weekly pnpm update')
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -115,11 +207,91 @@ jobs:
           permission-actions: read # 失敗した run のログの読み取り
           permission-workflows: write # workflow ファイルに触れる修正の push
 
+      - name: Resolve the failing run
+        id: target
+        if: steps.gate.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_RUN: ${{ inputs.run }}
+          RUN_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_NAME: ${{ github.event.workflow_run.name }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          set -euo pipefail
+
+          if [ "${EVENT_NAME}" = 'workflow_dispatch' ]; then
+            if [ -n "${INPUT_RUN}" ]; then
+              # Accept a run URL, a job URL, or a bare run ID. `sed` leaves a
+              # bare ID untouched, so the check below is what rejects junk.
+              run_id="$(printf '%s' "${INPUT_RUN}" | sed -E 's#.*/runs/([0-9]+).*#\1#')"
+
+              if ! printf '%s' "${run_id}" | grep -qE '^[0-9]+$'; then
+                echo "::error::Could not read a run ID out of '${INPUT_RUN}'."
+                exit 1
+              fi
+
+              fields="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}" \
+                --jq '[.name, .head_branch, .html_url] | @tsv')"
+            else
+              # Nothing was named. There is only ever one update branch open at
+              # a time, so the target is not ambiguous: take the open
+              # `chore/pnpm-update` pull request, newest first if somehow
+              # several are open, since the branch names carry the date.
+              branch="$(gh api "repos/${GITHUB_REPOSITORY}/pulls?state=open&per_page=100" \
+                --jq '[.[] | .head.ref | select(startswith("chore/pnpm-update"))] | sort | last // empty')"
+
+              if [ -z "${branch}" ]; then
+                echo '::error::No open chore/pnpm-update pull request to fix.'
+                exit 1
+              fi
+
+              echo "Update branch: ${branch}"
+
+              fields="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?branch=${branch}&status=failure&per_page=50" \
+                --jq '($ENV.WATCHED_WORKFLOWS | split("\n") | map(select(. != ""))) as $watched
+                      | [.workflow_runs[] | select([.name] | inside($watched))] | first
+                      | if . == null then empty else [.name, .head_branch, .html_url] | @tsv end')"
+
+              if [ -z "${fields}" ]; then
+                echo "::error::Nothing to fix: no failed run on ${branch} from a workflow this one watches."
+                exit 1
+              fi
+            fi
+
+            name="$(printf '%s' "${fields}" | cut -f1)"
+            branch="$(printf '%s' "${fields}" | cut -f2)"
+            url="$(printf '%s' "${fields}" | cut -f3)"
+
+            # On `workflow_run` the job's `if:` is what keeps this off any other
+            # branch. A run named by hand never passed through it, and the next
+            # step checks the branch out for Claude to commit to — so a run from
+            # `main` would put a `fix(deps):` commit straight onto `main`.
+            if ! printf '%s' "${branch}" | grep -q '^chore/pnpm-update'; then
+              echo "::error::That run is on '${branch}', which is not a chore/pnpm-update branch."
+              exit 1
+            fi
+          else
+            name="${RUN_NAME}"
+            branch="${RUN_BRANCH}"
+            url="${RUN_URL}"
+          fi
+
+          echo "Workflow: ${name}"
+          echo "Branch:   ${branch}"
+          echo "Run:      ${url}"
+
+          {
+            echo "name=${name}"
+            echo "branch=${branch}"
+            echo "url=${url}"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Checkout the failing branch
         if: steps.gate.outputs.enabled == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ steps.target.outputs.branch }}
           # The attempt cap below counts commits, and `pnpm run fmt` compares
           # against `origin/main`.
           fetch-depth: 0
@@ -128,6 +300,8 @@ jobs:
       - name: Check the attempt cap
         id: attempts
         if: steps.gate.outputs.enabled == 'true'
+        env:
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
 
@@ -136,13 +310,23 @@ jobs:
           previous="$(git log --format='%s' origin/main..HEAD --grep='^fix(deps): ')"
           count="$(printf '%s' "$previous" | grep -c . || true)"
 
-          echo "Attempts so far: ${count}"
+          echo "Attempts so far: ${count} of ${MAX_FIX_ATTEMPTS}"
+          echo "attempt=$((count + 1))" >> "$GITHUB_OUTPUT"
 
-          if [ "$count" -ge 2 ]; then
+          # The cap exists to stop this from retrying unattended. A person
+          # pressing the button is attended, so a manual run overrides it.
+          if [ "${EVENT_NAME}" = 'workflow_dispatch' ]; then
+            echo 'Manual run: not applying the attempt cap.'
+            echo 'proceed=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$count" -ge "${MAX_FIX_ATTEMPTS}" ]; then
             {
               echo '### Gave up'
               echo
-              echo "Already tried ${count} times on this branch; leaving it for a human."
+              echo "Already tried ${count} times on this branch, which is the limit"
+              echo '(`MAX_FIX_ATTEMPTS`); leaving it for a human.'
             } >> "$GITHUB_STEP_SUMMARY"
             echo 'proceed=false' >> "$GITHUB_OUTPUT"
           else
@@ -173,16 +357,23 @@ jobs:
           additional_permissions: |
             actions: read
           claude_args: '--allowedTools Bash,Read,Edit,Write,Glob,Grep'
+          # See the header comment: the actor here is always the App bot.
+          allowed_bots: 'noshiro-repo-automation-bot'
           prompt: |
             The weekly dependency update opened
-            `${{ github.event.workflow_run.head_branch }}`, and
-            `${{ github.event.workflow_run.name }}` failed on it:
+            `${{ steps.target.outputs.branch }}`, and
+            `${{ steps.target.outputs.name }}` failed on it:
 
-            ${{ github.event.workflow_run.html_url }}
+            ${{ steps.target.outputs.url }}
 
             You are on that branch, with dependencies installed. Read the
             failing run's logs, then make the follow-up change the update needs
             and commit it to this branch.
+
+            This is attempt ${{ steps.attempts.outputs.attempt }} of
+            ${{ env.MAX_FIX_ATTEMPTS }}. Any `fix(deps):` commits already on the
+            branch are earlier attempts that did not turn CI green — read them
+            first, and do not retry an approach that has already been tried.
 
             Follow `AGENTS.md` — it is the instructions for this repository.
             Note that `AGENTS.md` is generated: edit `agents/local-rules.md`
@@ -214,8 +405,10 @@ jobs:
   # branch to fix and the cause is likely the workflow or the update scripts.
   fix-workflow:
     if: >-
+      (github.event_name == 'workflow_dispatch' && inputs.job == 'fix-workflow') ||
+      (github.event_name == 'workflow_run' &&
       github.event.workflow_run.conclusion == 'failure' &&
-      github.event.workflow_run.name == 'Weekly pnpm update'
+      github.event.workflow_run.name == 'Weekly pnpm update')
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -248,6 +441,45 @@ jobs:
           permission-actions: read # 失敗した run のログの読み取り
           permission-workflows: write # pnpm-update.yml 自体の修正
 
+      - name: Resolve the failing run
+        id: target
+        if: steps.gate.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_RUN: ${{ inputs.run }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          set -euo pipefail
+
+          if [ "${EVENT_NAME}" = 'workflow_dispatch' ]; then
+            if [ -n "${INPUT_RUN}" ]; then
+              run_id="$(printf '%s' "${INPUT_RUN}" | sed -E 's#.*/runs/([0-9]+).*#\1#')"
+
+              if ! printf '%s' "${run_id}" | grep -qE '^[0-9]+$'; then
+                echo "::error::Could not read a run ID out of '${INPUT_RUN}'."
+                exit 1
+              fi
+
+              url="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}" --jq '.html_url')"
+            else
+              # This half only ever diagnoses one workflow, so its own last
+              # failure is the target.
+              url="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/pnpm-update.yml/runs?status=failure&per_page=1" \
+                --jq '.workflow_runs[0].html_url // empty')"
+
+              if [ -z "${url}" ]; then
+                echo '::error::Nothing to diagnose: Weekly pnpm update has no failed run.'
+                exit 1
+              fi
+            fi
+          else
+            url="${RUN_URL}"
+          fi
+
+          echo "Run: ${url}"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         if: steps.gate.outputs.enabled == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -264,11 +496,15 @@ jobs:
           additional_permissions: |
             actions: read
           claude_args: '--allowedTools Bash,Read,Edit,Write,Glob,Grep'
+          # See the header comment. Not always a bot here — a scheduled run is
+          # attributed to a user — but it is whenever the bot's own commit is
+          # what `Weekly pnpm update` last ran on.
+          allowed_bots: 'noshiro-repo-automation-bot'
           prompt: |
             The `Weekly pnpm update` workflow itself failed — not CI on the
             branch it opens, the workflow run:
 
-            ${{ github.event.workflow_run.html_url }}
+            ${{ steps.target.outputs.url }}
 
             You are on `main`. Read that run's logs and work out what happened.
             `.github/workflows/pnpm-update.yml` has a long header comment
