@@ -19,7 +19,7 @@ Template Repository for TypeScript Monorepo
 - 🚀 [Changeset](https://github.com/changesets/changesets) triggers on merges to `main`, handling versioning, changelog updates, npm publish, and GitHub Releases.
 - 📚 [TypeDoc](https://typedoc.org/index.html) generates docs.
 - 📦 `pnpm` provides strict dependency management (`pnpm-lock.yaml` included).
-- 📦 `pnpm-update.yml` opens a single weekly PR for npm dependencies and GitHub Action pins; Dependabot is not used.
+- 📦 `pnpm-update.yml` opens a single daily PR for npm dependencies and GitHub Action pins; Dependabot is not used.
 - 🔐 [github-settings-as-code](https://github.com/noshiro-pf/github-settings-as-code) tracks repository settings and rulesets as code, detecting changes via diffs.
 - 🤖 `CLAUDE.md` holds the agent instructions for this repository, maintained directly in the repository.
 
