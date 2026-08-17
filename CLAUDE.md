@@ -506,10 +506,12 @@ In addition to the general instructions above, the project-specific rules for th
 
 ### Dependency updates
 
-`pnpm-update.yml` runs weekly and opens a single bundled pull request that
-auto-merges once CI passes. What it holds back lives in `pnpm-workspace.yaml`
-(`update.ignoreDeps`, `minimumReleaseAge`) — that is the single source of truth
-for it; do not add exclusion arguments to the `update-packages` script.
+`pnpm-update.yml` runs daily and opens a single bundled pull request that
+auto-merges once CI passes. It rebuilds `chore/pnpm-update` from main on every
+run, so there is only ever one open and it is always rebased onto main. What it
+holds back lives in `pnpm-workspace.yaml` (`update.ignoreDeps`,
+`minimumReleaseAge`) — that is the single source of truth for it; do not add
+exclusion arguments to the `update-packages` script.
 
 **GitHub Action pins are updated by `pnpm run update-actions`, not by
 `update-packages`.** `update.githubActions` is `false` so that
