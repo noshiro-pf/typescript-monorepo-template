@@ -18,8 +18,6 @@
     "packages/**"
   ],
   "scripts": {
-    "agents:gen": "tsx ./scripts/cmd/gen-agents-md.mts",
-    "agents:sync": "tsx ./scripts/cmd/sync-agent-config.mts",
     "check:root": "pnpm run '/check:root:.*/'",
     "check:root:lint": "pnpm run z:eslint ./{scripts,configs}/**/*.mts --fix",
     "check:root:type": "tsc -p ./tsconfig.json --noEmit",
