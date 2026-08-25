@@ -57,10 +57,39 @@ from the root and the plain form from inside a package directory.
 **Validation:**
 
 - `pnpm run cspell` — Run spell checking (root only; it covers the whole tree).
-- `pnpm run ws:type-check` — TypeScript type checking (no emit).
+- `pnpm run ws:type-check` — TypeScript type checking (no emit), against the
+  strict standard library. **See "The strict standard library" below.**
 - `pnpm run ws:lint` / `pnpm run ws:lint:fix` — Run ESLint check/fix.
 - `pnpm run check:root` — Type-check and lint the root's own `scripts/` and `configs/`, which no package covers.
 - `pnpm run check-all` — Run all checks (types, lint, tests, markdown, spellcheck).
+
+### The strict standard library
+
+`strict-ts-lib-v7.0` replaces TypeScript's built-in library declarations with
+stricter ones — `Number.isFinite` takes a `number` rather than an `unknown`,
+`Object.keys` returns the object's own keys rather than `string[]`, and so on.
+
+- **One mechanism: a name.** The root `prepare` script runs the bundle's own
+  linker, which writes one symlink per lib group into
+  `node_modules/@typescript/`. TypeScript resolves a lib replacement as an
+  ordinary package-name lookup once `libReplacement` is on. Do not add an
+  `@typescript/lib-*` entry to `paths` — that is a second route to the same
+  place, and one that goes stale silently.
+- **Type-check with it, publish without it.** `libReplacement` is on in
+  `configs/tsconfig/tsconfig.type-check.json` and back off in
+  `configs/tsconfig/tsconfig.build.json`, which extends it. A consumer does not
+  have these declarations installed, so nothing they receive may depend on
+  them.
+- **`files` ships `src`, so the source has to read the same under either
+  library.** Types reach a consumer from `src`, not from an emitted `.d.mts`.
+  A construct that only type-checks under the strict library turns red in the
+  consumer's editor. Keep such assertions in `test/`, which `files` leaves out.
+- **`libReplacement` fails silently.** TypeScript falls back to its own
+  declarations with no diagnostic if the links go missing. That is what each
+  package's `test/strict-lib-active.mts` is for: a `@ts-expect-error` that
+  stops compiling — `TS2578` — the moment the replacement stops happening. A
+  new package copied from `package-a` should keep it, along with `"./test"` in
+  its `tsconfig.json` `include`.
 
 **Formatting:**
 

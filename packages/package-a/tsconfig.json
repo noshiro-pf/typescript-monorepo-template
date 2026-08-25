@@ -3,5 +3,5 @@
     "../../configs/tsconfig/tsconfig.type-check.json",
     "../../configs/tsconfig/tsconfig.vite.json"
   ],
-  "include": ["./src", "./scripts", "./configs"]
+  "include": ["./src", "./test", "./scripts", "./configs"]
 }

@@ -39,6 +39,7 @@
     "fmt:diff": "format-diff-from origin/main",
     "fmt:full": "prettier --ignore-unknown --no-error-on-unmatched-pattern --write .",
     "md": "markdownlint-cli2",
+    "prepare": "pnpm run z:link-strict-lib",
     "repo-settings:apply": "repo-settings apply",
     "repo-settings:backup": "repo-settings backup",
     "update-actions": "pnpm update --recursive --include-github-actions \"*/*\"",
@@ -56,7 +57,8 @@
     "ws:test:cov": "pnpm run --recursive --if-present test:cov",
     "ws:tsc": "pnpm run --recursive --if-present tsc",
     "ws:type-check": "pnpm run --recursive --if-present type-check",
-    "z:eslint": "NODE_OPTIONS='--max-old-space-size=6144' TIMING=1 eslint"
+    "z:eslint": "NODE_OPTIONS='--max-old-space-size=6144' TIMING=1 eslint",
+    "z:link-strict-lib": "strict-ts-lib-v7.0-link"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.0",
@@ -86,6 +88,7 @@
     "prettier-plugin-packagejson": "3.0.2",
     "rollup": "4.62.4",
     "rollup-plugin-esbuild": "6.2.1",
+    "strict-ts-lib-v7.0": "0.6.0",
     "ts-codemod-cli": "^1.0.1",
     "ts-codemod-lib": "3.1.0",
     "ts-data-forge": "14.4.0",
