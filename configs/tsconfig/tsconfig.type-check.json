@@ -50,6 +50,17 @@
 
     "lib": ["ESNext", "DOM"],
 
+    // Type-check against the strict standard library instead of TypeScript's
+    // own declarations. TypeScript 6 defaults this to false, so the
+    // `@typescript/lib-*` links the root `prepare` script writes do nothing
+    // without it; both are needed. The replacement is resolved by package
+    // name, not through `paths`.
+    //
+    // This is the type-check side only. `tsconfig.build.json` extends this
+    // file and turns it back off, because what a consumer installs must not
+    // depend on declarations they do not have. See the note there.
+    "libReplacement": true,
+
     // Completeness
     "skipLibCheck": true
   }
