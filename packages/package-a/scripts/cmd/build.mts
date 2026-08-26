@@ -72,9 +72,21 @@ const build = async (skipCheck: boolean): Promise<void> => {
   });
 
   await logStep({
+    startMessage: 'Generating type declarations',
+    action: () =>
+      runCmdStep(
+        `tsc -p ${path.resolve(workspaceRootPath, './configs/tsconfig.build.json')} --emitDeclarationOnly`,
+        'Type declaration generation failed',
+      ),
+    successMessage: 'Type declarations generated',
+  });
+
+  await logStep({
     startMessage: 'Generating dist/types.d.mts',
     action: async () => {
-      const content = "export * from './entry-point.mjs';\n";
+      // Re-exports the entry point's emitted declarations under a stable
+      // name, which is what `exports` and `types` in package.json point at.
+      const content = "export * from './index.mjs';\n";
 
       const typesFile = path.resolve(distDir, 'types.d.mts');
 

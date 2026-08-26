@@ -5,21 +5,23 @@
     // turns on, because this file is what a build reads and a build's output
     // is what consumers get.
     //
-    // Today nothing here type-checks: rollup transpiles with esbuild, which
-    // ignores this option, and no `.d.mts` is emitted at all — consumers read
-    // types out of the `src` this package ships. So the line changes nothing
-    // yet. It matters the moment declaration emit is added, which the rollup
-    // config already says is the intent: a type left to inference would then
-    // put a name like `StrictLibInternals.ToObjectKeys` into the output, and
-    // that name exists here and nowhere in a consumer's `node_modules`.
+    // This is load-bearing now that `build` emits declarations through this
+    // config: a type left to inference would otherwise put a name like
+    // `StrictLibInternals.ToObjectKeys` into `dist/*.d.mts`, and that name
+    // exists here and nowhere in a consumer's `node_modules`.
     //
     // Type-check with the strict library, publish against the stock one.
     "libReplacement": false,
 
     // Emit
-    "downlevelIteration": true,
+    //
+    // `downlevelIteration` and `importsNotUsedAsValues` are not listed:
+    // TypeScript 6.0 reports both as deprecated (TS5101) and refuses to run,
+    // and they were doing nothing here anyway — the first is a no-op with
+    // `"target": "ESNext"`, and `"remove"` was already the default behavior
+    // of the second. This config is read for declaration emit only; esbuild
+    // transpiles the JavaScript and adds its own helpers inline.
     "importHelpers": true,
-    "importsNotUsedAsValues": "remove",
     "newLine": "lf",
     "noEmit": false,
     "noEmitOnError": true,

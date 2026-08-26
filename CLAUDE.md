@@ -80,10 +80,13 @@ stricter ones — `Number.isFinite` takes a `number` rather than an `unknown`,
   `configs/tsconfig/tsconfig.build.json`, which extends it. A consumer does not
   have these declarations installed, so nothing they receive may depend on
   them.
-- **`files` ships `src`, so the source has to read the same under either
-  library.** Types reach a consumer from `src`, not from an emitted `.d.mts`.
-  A construct that only type-checks under the strict library turns red in the
-  consumer's editor. Keep such assertions in `test/`, which `files` leaves out.
+- **`files` ships `src`, so the source still has to read the same under either
+  library.** A consumer resolves types from the emitted `dist/*.d.mts`, but
+  `declarationMap` sends "Go to Definition" into the shipped `src`, and what
+  they open there is type-checked by their editor against the stock library. A
+  construct that only compiles under the strict one turns red for them. Keep
+  such assertions in `test/`, which `files` leaves out — the probe below would
+  itself fail to compile on their side.
 - **`libReplacement` fails silently.** TypeScript falls back to its own
   declarations with no diagnostic if the links go missing. That is what each
   package's `test/strict-lib-active.mts` is for: a `@ts-expect-error` that
