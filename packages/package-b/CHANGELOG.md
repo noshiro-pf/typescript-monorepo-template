@@ -1,6 +1,6 @@
-# @noshiro-pf/package-a
+# @noshiro-pf/package-b
 
-## 1.0.2
+## 0.1.1
 
 ### Patch Changes
 
@@ -13,15 +13,3 @@
 
     `build` now runs `tsc --emitDeclarationOnly` after rollup, and the three
     manifest fields name files that exist.
-
-## 1.0.1
-
-### Patch Changes
-
-- 7b39eea: test
-
-## 1.0.0
-
-### Major Changes
-
-- 0098bf3: Initial release
