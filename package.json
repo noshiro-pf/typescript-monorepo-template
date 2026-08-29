@@ -71,7 +71,7 @@
     "@vitest/coverage-v8": "4.1.11",
     "@vitest/ui": "4.1.11",
     "conventional-changelog-conventionalcommits": "10.4.0",
-    "cspell": "10.0.1",
+    "cspell": "10.1.0",
     "eslint": "10.9.0",
     "eslint-config-typed": "5.10.0",
     "eslint-plugin-ts-data-forge": "0.5.1",
