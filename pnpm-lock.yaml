@@ -45,8 +45,8 @@ importers:
         specifier: 10.9.0
         version: 10.9.0(jiti@2.7.0)(supports-color@7.2.0)
       eslint-config-typed:
-        specifier: 5.10.0
-        version: 5.10.0(eslint@10.9.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)(vitest@4.1.11)
+        specifier: 5.10.1
+        version: 5.10.1(eslint@10.9.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)(vitest@4.1.11)
       eslint-plugin-ts-data-forge:
         specifier: 0.5.1
         version: 0.5.1(eslint@10.9.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
@@ -102,8 +102,8 @@ importers:
         specifier: 14.5.0
         version: 14.5.0(typescript@6.0.3)
       ts-repo-utils:
-        specifier: 10.3.2
-        version: 10.3.2(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
+        specifier: 10.3.3
+        version: 10.3.3(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
       ts-type-forge:
         specifier: 9.2.2
         version: 9.2.2
@@ -445,8 +445,8 @@ packages:
   '@cspell/dict-node@5.0.9':
     resolution: {integrity: sha512-hO+ga+uYZ/WA4OtiMEyKt5rDUlUyu3nXMf8KVEeqq2msYvAPdldKBGH7lGONg6R/rPhv53Rb+0Y1SLdoK1+7wQ==}
 
-  '@cspell/dict-npm@5.2.46':
-    resolution: {integrity: sha512-Z5GG59c17UEk6BPZ3lVD/++GvPBI+O05OTGm4sRA/0I/qszbstuYRw+j2//5f8SWzOFXKaGYI8kygwKX9EQZ9Q==}
+  '@cspell/dict-npm@5.2.47':
+    resolution: {integrity: sha512-r5ePbkmRtpMwiv+MHd6be1xIRLuXoEwaSLIZLu3mY+qtPVo0LUj/kVl4YeIxHONiwyef75zqS3gnT+s5UF7diQ==}
 
   '@cspell/dict-php@4.1.1':
     resolution: {integrity: sha512-EXelI+4AftmdIGtA8HL8kr4WlUE11OqCSVlnIgZekmTkEGSZdYnkFdiJ5IANSALtlQ1mghKjz+OFqVs6yowgWA==}
@@ -1889,8 +1889,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-typed@5.10.0:
-    resolution: {integrity: sha512-3EjEAWpdagq7ku8hswyW30/FZmNkYgHyn4Y5Sg231BwQXuBobKxYtLORAXfwy68ri7egj74KQRa9wPJLH6Q2AQ==}
+  eslint-config-typed@5.10.1:
+    resolution: {integrity: sha512-cGUBka71NB9Tslr6NzNyE4YeFlWCxe1nTYb+OLNWgxBhInM/t2yzrmBpxkRGQkXhJGn2odCHKrVGvEBwj1NoxA==}
     engines: {node: '>=22.22.2', pnpm: '>=9.0.0'}
     peerDependencies:
       eslint: '>=9.0.0'
@@ -3389,8 +3389,8 @@ packages:
   ts-morph@28.0.0:
     resolution: {integrity: sha512-Wp3tnZ2bzwxyTZMtgWVzXDfm7lB1Drz+y9DmmYH/L702PQhPyVrp3pkou3yIz4qjS14GY9kcpmLiOOMvl8oG1g==}
 
-  ts-repo-utils@10.3.2:
-    resolution: {integrity: sha512-QxzZgtsjc/L2UGz7IP+V7jepXivTantarxrNJRf7uwzizTtwPr0MSmpkGyC+5VOBbkUvXnzpEw7U8aJeQwuIwA==}
+  ts-repo-utils@10.3.3:
+    resolution: {integrity: sha512-hmsy5USdbJcaB+LWk2KD0xxNjZNBNvi8p7Mm60/e5X46fC/ML0Yb2fIXHudzGsAawWZXDsGoVgydeJA0AzG8OQ==}
     engines: {node: '>=22.22.2', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -3930,7 +3930,7 @@ snapshots:
       '@cspell/dict-markdown': 2.0.18(@cspell/dict-css@4.1.2)(@cspell/dict-html-symbol-entities@4.0.5)(@cspell/dict-html@4.0.16)(@cspell/dict-typescript@3.2.3)
       '@cspell/dict-monkeyc': 1.1.0
       '@cspell/dict-node': 5.0.9
-      '@cspell/dict-npm': 5.2.46
+      '@cspell/dict-npm': 5.2.47
       '@cspell/dict-php': 4.1.1
       '@cspell/dict-powershell': 5.0.15
       '@cspell/dict-public-licenses': 2.0.16
@@ -4058,7 +4058,7 @@ snapshots:
 
   '@cspell/dict-node@5.0.9': {}
 
-  '@cspell/dict-npm@5.2.46': {}
+  '@cspell/dict-npm@5.2.47': {}
 
   '@cspell/dict-php@4.1.1': {}
 
@@ -5445,7 +5445,7 @@ snapshots:
       eslint: 10.9.0(jiti@2.7.0)(supports-color@7.2.0)
       semver: 7.8.5
 
-  eslint-config-typed@5.10.0(eslint@10.9.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)(vitest@4.1.11):
+  eslint-config-typed@5.10.1(eslint@10.9.0(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(ts-declaration-location@1.0.7(typescript@6.0.3))(typescript@6.0.3)(vitest@4.1.11):
     dependencies:
       '@eslint/core': 1.2.1
       '@sindresorhus/is': 8.1.0
@@ -5973,7 +5973,7 @@ snapshots:
       octokit-safe-types: 1.2.26(typescript@6.0.3)
       ts-data-forge: 14.5.0(typescript@6.0.3)
       ts-fortress: 12.0.4(typescript@6.0.3)
-      ts-repo-utils: 10.3.2(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
+      ts-repo-utils: 10.3.3(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
       ts-type-forge: 9.2.2
     transitivePeerDependencies:
       - prettier
@@ -7190,7 +7190,7 @@ snapshots:
       dedent: 1.7.2
       ts-codemod-lib: 3.3.0(typescript@6.0.3)
       ts-data-forge: 14.5.0(typescript@6.0.3)
-      ts-repo-utils: 10.3.2(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
+      ts-repo-utils: 10.3.3(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - prettier
@@ -7229,7 +7229,7 @@ snapshots:
       '@ts-morph/common': 0.29.0
       code-block-writer: 13.0.3
 
-  ts-repo-utils@10.3.2(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3):
+  ts-repo-utils@10.3.3(prettier@3.9.6)(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
       '@nodelib/fs.walk': 3.0.1
       '@sindresorhus/is': 8.1.0
