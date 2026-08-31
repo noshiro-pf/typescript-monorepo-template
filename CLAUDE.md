@@ -551,9 +551,23 @@ exclusion arguments to the `update-packages` script.
 `update-actions` turns the check back on with `--include-github-actions` and
 deliberately omits `--latest`, so an action only moves within `^current` and a
 major waits for a human. Do not set `update.githubActions` back to `true`, and
-do not add `--latest` to `update-actions`: `changesets/action` v2 requires
-Changesets CLI v3 and renamed every input, so taking that major unattended
-breaks `release.yml` on main.
+do not add `--latest` to `update-actions`: `changesets/action` renamed every
+input at v2, so taking that major unattended leaves `release.yml` passing the
+old names and breaks the release on main.
+
+**`changesets/action` and `@changesets/cli` majors move together.** The action
+learns what `changeset publish` actually published from the CLI, and the two
+majors disagree about how: v1 scrapes `New tag: <pkg>@<version>` lines out of
+the publish script's stdout, while v2 reads a file the CLI writes at the path in
+`CHANGESETS_OUTPUT`. Only CLI v2 prints that line; only CLI v3 writes that file.
+Pair them the wrong way and nothing fails loudly — `changeset publish` still
+pushes the packages to the registry, and the action simply finds nothing to tag,
+so the git tags and the GitHub Releases are skipped without a diagnostic and the
+job stays green. `update-packages` moves the CLI while `update-actions` moves
+the action, so nothing links the two; check the other side by hand whenever
+either major changes. This is not hypothetical: `@noshiro-pf/package-a@1.0.2`
+and `@noshiro-pf/package-b@0.1.1` reached GitHub Packages with no tag and no
+release because the CLI reached v3 while the action was still pinned to v1.
 
 Neither `minimumReleaseAge` nor `update.ignoreDeps` applies to actions. pnpm
 resolves action versions from `git ls-remote` refs, which carry a tag name and a
