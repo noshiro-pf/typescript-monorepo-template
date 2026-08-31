@@ -53,21 +53,33 @@ jobs:
 
       - name: Create Release Pull Request or Publish
         id: changesets
-        # v1 系に留めること。v2 は Changesets CLI v3 専用で、CLI v2 を検出すると
-        # 即エラーになる。入力名も全て改名されている
-        # （publish → publish-script, version → version-script,
-        #   title → pr-title, commit → commit-message）。
-        # 上げるなら @changesets/cli の v3 移行と下の with: の書き換えを同時に行う。
+        # この action のメジャーは @changesets/cli のメジャーと対で選ぶこと。
+        # v2 は publish した内容を、CHANGESETS_OUTPUT が指す一時ファイル経由で
+        # CLI から受け取る。これを書けるのは CLI v3 以降。
+        # v1 は代わりに publish スクリプトの標準出力から `New tag: <pkg>@<ver>`
+        # という行を正規表現で拾う実装で、その行を出さなくなった CLI v3 と
+        # 組み合わせると 1 件もマッチせず、publish 自体は成功するのに
+        # git tag の push と GitHub Release の作成がエラーも出さずに丸ごと
+        # 飛ぶ（package-a@1.0.2 / package-b@0.1.1 が実際にそうなった）。
+        # @changesets/cli を v2 系に戻すなら、この action も v1 に戻すこと。
         # pnpm-update.yml がこのピンを勝手にメジャー更新しないことは
         # pnpm-workspace.yaml の `update.githubActions: false` が担保している。
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
         with:
-          publish: pnpm run ci:publish
-          version: pnpm run ci:version-packages
-          title: 'chore: version packages'
-          commit: 'chore: version packages'
+          # v2 で入力名が全て改名された
+          # （publish → publish-script, version → version-script,
+          #   title → pr-title, commit → commit-message）。
+          # トークンも env ではなく github-token 入力で渡す。
+          github-token: ${{ steps.app-token.outputs.token }}
+          publish-script: pnpm run ci:publish
+          version-script: pnpm run ci:version-packages
+          pr-title: 'chore: version packages'
+          commit-message: 'chore: version packages'
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          # GITHUB_TOKEN は env で渡さないこと。v2 は github-token 入力と
+          # 値が食い違う GITHUB_TOKEN を見つけると即エラーになる。publish /
+          # version スクリプトには action 側が同じトークンを注入する。
+          #
           # GitHub Packages への publish は自リポジトリ向けなので GITHUB_TOKEN で足りる
           # （ job に packages: write を付与済み ）。install ステップも同じトークンを使う。
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
