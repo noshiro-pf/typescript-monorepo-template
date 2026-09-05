@@ -19,6 +19,10 @@ minimumReleaseAge: 10080 # = 7 days
 
 minimumReleaseAgeExclude:
   - '@types/**'
+  # `octokit-safe-types` と `github-settings-as-code` が引き込む推移的依存。
+  # 親を除外してもその依存先は除外されないため、`@octokit/*` が公開直後だと
+  # `pnpm update --latest` が ERR_PNPM_NO_MATURE_MATCHING_VERSION で落ちる。
+  - '@octokit/**'
   - ts-type-forge
   - eslint-plugin-ts-type-forge
   - ts-data-forge
