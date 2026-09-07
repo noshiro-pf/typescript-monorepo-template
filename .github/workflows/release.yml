@@ -64,7 +64,7 @@ jobs:
         # @changesets/cli を v2 系に戻すなら、この action も v1 に戻すこと。
         # pnpm-update.yml がこのピンを勝手にメジャー更新しないことは
         # pnpm-workspace.yaml の `update.githubActions: false` が担保している。
-        uses: changesets/action@8488615a623b1b9c987934bb89eae8af6a946ac1 # v2.1.1
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           # v2 で入力名が全て改名された
           # （publish → publish-script, version → version-script,
