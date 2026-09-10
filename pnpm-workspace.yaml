@@ -25,6 +25,8 @@ minimumReleaseAgeExclude:
   - '@octokit/**'
   - ts-type-forge
   - eslint-plugin-ts-type-forge
+  - ts-std-forge
+  - eslint-plugin-ts-std-forge
   - ts-data-forge
   - eslint-plugin-ts-data-forge
   - ts-fortress
