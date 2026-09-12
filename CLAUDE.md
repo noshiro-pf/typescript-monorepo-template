@@ -547,13 +547,13 @@ exclusion arguments to the `update-packages` script.
 
 **GitHub Action pins are updated by `pnpm run update-actions`, not by
 `update-packages`.** `update.githubActions` is `false` so that
-`update-packages`, which carries `--latest`, leaves the workflow files alone;
-`update-actions` turns the check back on with `--include-github-actions` and
-deliberately omits `--latest`, so an action only moves within `^current` and a
-major waits for a human. Do not set `update.githubActions` back to `true`, and
-do not add `--latest` to `update-actions`: `changesets/action` renamed every
-input at v2, so taking that major unattended leaves `release.yml` passing the
-old names and breaks the release on main.
+`update-packages`, which carries `--latest`, leaves the workflow files alone,
+and `update-actions` runs `scripts/cmd/mature-updates.mts actions` rather than
+`pnpm update --include-github-actions`. It moves a pin only within its major,
+so a major waits for a human. Do not set `update.githubActions` back to
+`true`, and do not teach the script to cross a major: `changesets/action`
+renamed every input at v2, so taking that major unattended leaves
+`release.yml` passing the old names and breaks the release on main.
 
 **`changesets/action` and `@changesets/cli` majors move together.** The action
 learns what `changeset publish` actually published from the CLI, and the two
@@ -569,10 +569,41 @@ either major changes. This is not hypothetical: `@noshiro-pf/package-a@1.0.2`
 and `@noshiro-pf/package-b@0.1.1` reached GitHub Packages with no tag and no
 release because the CLI reached v3 while the action was still pinned to v1.
 
-Neither `minimumReleaseAge` nor `update.ignoreDeps` applies to actions. pnpm
+**pnpm cannot hold an action to `minimumReleaseAge`; the script can.** pnpm
 resolves action versions from `git ls-remote` refs, which carry a tag name and a
-SHA but no publication date, so there is nothing for the age check to read — a
-tag hours old is taken regardless. Hold an action back by leaving the major
-alone, not by listing it in `ignoreDeps`.
-`pnpm outdated --include-github-actions --latest` lists the majors that are
-waiting.
+SHA but no publication date, so under `--include-github-actions` a tag hours
+old was taken regardless. The script reads each action's GitHub Releases
+instead, takes the newest release of the same major whose `published_at` is
+older than the hold, and resolves the tag to its commit through the Commits
+API — the same SHA pin pnpm wrote. Drafts, prereleases and releases without a
+publish time are not candidates. `update.ignoreDeps` still does not apply to
+actions; hold one back by leaving the major alone. The workflow passes
+`GITHUB_TOKEN` as `GH_TOKEN` in a step of its own, so that no token is in scope
+for the lifecycle scripts `pnpm install` runs.
+`pnpm outdated --include-github-actions --latest` still lists the majors that
+are waiting, and the script prints them on every run.
+
+**`pnpm self-update` ignores `minimumReleaseAge` by design, and the next pnpm
+command does not.** `self-update` only rewrites `packageManager`; the pnpm that
+runs afterwards fetches that version through the registry under the hold, so a
+release younger than seven days made `pnpm-update.yml` fail daily with
+`ERR_PNPM_NO_MATURE_MATCHING_VERSION` until it matured. The workflow therefore
+runs `scripts/cmd/mature-updates.mts pnpm`, which picks the newest stable pnpm
+older than the hold and passes it to `self-update`. Do not put `pnpm` in
+`minimumReleaseAgeExclude` to get the same effect: it is the one package that
+runs every install script in the tree. A local `pnpm self-update` does not
+reproduce the failure — the standalone binary switches versions by another
+route; CI runs the JS build `pnpm/action-setup` installs with npm, which adds
+the `pnpm` npm package to switch and so meets the hold.
+
+**That script runs on `node`, not `tsx`.** Both subcommands run before
+`pnpm install`, so nothing in `node_modules` exists yet; Node strips the types
+itself, which holds only while the file imports `node:*` alone at runtime (a
+top-level `import type` is erased; the inline form the lint prefers is kept as
+a bare module load) and uses erasable syntax. `Temporal` makes it Node 26 or
+later — the Node the workflow runs on (`volta.node`), not the floor of the
+compatibility matrix, which is why its test runs from `pnpm run check:root:test` rather
+than with the package tests. The test executes the file under `node` against a
+fake `pnpm` and a fake GitHub API, and asserts that the runtime imports stay
+`node:`-only, which is what catches an ESLint `--fix` that pulls
+`ts-data-forge` in.
