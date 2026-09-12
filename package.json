@@ -20,6 +20,7 @@
   "scripts": {
     "check:root": "pnpm run '/check:root:.*/'",
     "check:root:lint": "pnpm run z:eslint ./{scripts,configs}/**/*.mts --fix",
+    "check:root:test": "vitest run --config ./configs/vitest.root.config.mts",
     "check:root:type": "tsc -p ./tsconfig.json --noEmit",
     "check-all": "tsx ./scripts/cmd/check-all.mts",
     "ci:publish": "pnpm run ws:build && pnpm changeset publish",
@@ -36,7 +37,7 @@
     "prepare": "pnpm run z:link-strict-lib",
     "repo-settings:apply": "repo-settings apply",
     "repo-settings:backup": "repo-settings backup",
-    "update-actions": "pnpm update --recursive --include-github-actions \"*/*\"",
+    "update-actions": "node ./scripts/cmd/mature-updates.mts actions",
     "update-packages": "pnpm update --latest --recursive",
     "ws:build": "tsx ./scripts/cmd/ws-build-stages.mts",
     "ws:check:ext": "pnpm run --recursive --if-present check:ext",
@@ -103,6 +104,6 @@
     "pnpm": ">=9.0.0"
   },
   "volta": {
-    "node": "25.9.0"
+    "node": "26.3.1"
   }
 }
